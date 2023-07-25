@@ -1,0 +1,96 @@
+*{
+    background-color: #121213;
+    color: white;
+}
+h1 {
+    display: inline;
+    font-size: 40pt
+}
+#topbar {
+    height: 75px;
+    text-align: center;
+    display: block;
+    border-bottom: 2px solid #818384;
+    margin-bottom: 40px;
+}
+
+#social button {
+    border: white solid ;
+    border-radius: 30%
+
+}
+#hambContainter button {
+    position: relative;
+    left: 10px;
+    border: none;
+    
+}
+#hambContainter img {
+    height: 40px;
+}
+
+#hambContainter {
+    float: left;
+    width: 20%;
+    height: 75px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+#social {
+    
+    float: right;
+    width: 20%;
+    
+}
+#social > *{
+    display: inline;
+    margin: 10px;
+}
+
+#board {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    gap: 10px;
+    width: 356px;
+    margin-bottom: 30px;
+   
+   
+}
+#board > *{
+    border:2px solid #818384;
+    height: 60px;
+}
+.center {
+    display: flex;
+    justify-content: center;
+}
+
+#keyboard > *{
+    /*border: 2px solid #818384;*/
+    height: 60px
+}
+.row {
+    display: flex;
+    justify-content: center;
+    margin: 8px;
+}
+.button {
+    width: 45px;
+    height: 60px;
+    margin: 3px;
+    border-radius: 10%;
+    border: none;
+    background-color: #818384;
+    color: white;
+    font-size: 15pt;
+    font-weight: bolder;
+}
+.wide {
+    width: 65px;
+    font-size: 10pt;
+}
+.button img {
+    width: 100%
+}
