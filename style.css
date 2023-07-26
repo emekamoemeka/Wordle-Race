@@ -6,17 +6,27 @@
 h1 {
     display: inline;
     font-size: 40pt;
-    top: 100%;
+    z-index: 100;
     
 }
 #topbar {
     height: 75px;
     display: flex;
     justify-content: space-between;
-    border-bottom: 2px solid #818384;
-    margin-bottom: 40px;
+    align-items: center;
+    border-bottom: 2px solid #414242;
+    border-top: 1px solid white;
+    margin-bottom: 100px;
 }
-
+#social {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: row;
+    width: 20%;
+    font-size: 15px;
+    
+}
 #social button {
     border: white solid ;
     border-radius: 30%;
@@ -40,18 +50,9 @@ h1 {
     justify-content: flex-start;
 }
 
-#social {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    flex-direction: row;
-    width: 20%;
-    font-size: 15px;
-    
-}
+
 #social > * {
     margin: 10px;
-    height: 20px;
 }
 
 #board {
@@ -60,7 +61,7 @@ h1 {
     grid-template-rows: repeat(6, 1fr);
     gap: 10px;
     width: 356px;
-    margin-bottom: 30px;
+    margin-bottom: 100px;
    
 }
 
@@ -71,8 +72,12 @@ h1 {
     font-size: 30px;
     font-weight: bold;
     font-family: sans-serif;
-    border: 2px solid #818384;
+    border: 2px solid #414242;
     height: 60px;
+}
+#board .selected{
+    background-color: #414242;
+    border: 2px solid #414242;
 }
 #board .green{
     background-color: #588c4c;
@@ -80,7 +85,11 @@ h1 {
 }
 #board .yellow {
     background-color: #b89c3c;
-    border: 2px solid #b89c3c
+    border: 2px solid #b89c3c;
+}
+
+#board .current {
+    border: 2px solid #818384;
 }
 .center {
     display: flex;
