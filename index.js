@@ -17,37 +17,36 @@ var curGuess = ""
 var curTiles = []
 
 document.addEventListener('keydown', (event)=> {  
-     
-    if (boardIndex < tiles.length) {
-        if (event.key.length === 1 && colIndex < 5) {
-            tiles[boardIndex].innerHTML = event.key.toUpperCase()
-            curTiles.push(tiles[boardIndex])
-            boardIndex++
-            colIndex++
-            curGuess = curGuess + event.key
+    if ((/[a-zA-Z]/).test(event.key) || event.key == 'Enter' || event.key == 'Backspace') {
+        if (boardIndex < tiles.length) {
+            if (event.key.length === 1 && colIndex < 5) {
+                tiles[boardIndex].innerHTML = event.key.toUpperCase()
+                curTiles.push(tiles[boardIndex])
+                boardIndex++
+                colIndex++
+                curGuess = curGuess + event.key
             
-        }
-        if (event.key == "Enter" && colIndex == 5) {
-            colIndex = 0
-            compareGuess(curGuess, curTiles)
-            
-            curGuess = ""
-            curTiles = []
-        }
-        if (event.key == "Backspace") {
+            }
+            if (event.key == "Enter" && colIndex == 5) {
+                colIndex = 0
+                compareGuess(curGuess, curTiles)
+                
+                curGuess = ""
+                curTiles = []
+            }
+            if (event.key == "Backspace") {
            
-            if (boardIndex > 0 && colIndex >= 1 && curTiles.length > 0) {
-                tiles[boardIndex - 1].innerHTML = "";
+                if (boardIndex > 0 && colIndex >= 1 && curTiles.length > 0) {
+                    tiles[boardIndex - 1].innerHTML = "";
                 
-                boardIndex--
-                colIndex--
-                curTiles.pop()
+                    boardIndex--
+                    colIndex--
+                    curTiles.pop()
                 
+                }
             }
         }
     }
-
-
 });
 
 function compareGuess(guess, arrayOfTiles) {
@@ -73,7 +72,6 @@ function compareGuess(guess, arrayOfTiles) {
             }
 
         });
-        console.log(duplicateDetecter)
 
         arrayOfTiles.forEach((currentTile, i) => {
             if (duplicateDetecter.includes(currentTile.innerHTML) && greenTracker[i] == false) {
@@ -81,10 +79,9 @@ function compareGuess(guess, arrayOfTiles) {
                 duplicateDetecter = duplicateDetecter.replace(currentTile.innerHTML, "0", 1)
                 console.log(duplicateDetecter)
                 currentTile.style.border = "#b89c3c solid"
-        }
+            }
         });
     }
-
 }
 
 function gameOver() {
