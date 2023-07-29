@@ -2,7 +2,7 @@ const board = document.getElementById("board")
 
 const tiles = Array.from(board.querySelectorAll("div"))
 
-const target = "TODAY"
+const target = "LENNY"
 
 var boardIndex = 0
 var colIndex = 0
@@ -29,16 +29,16 @@ document.addEventListener('keydown', (event)=> {
             curTiles = []
         }
         if (event.key == "Backspace") {
-            tiles[boardIndex - 1].innerHTML = ""
-            if (boardIndex > 0) {
+           
+            if (boardIndex > 0 && colIndex >= 1 && curTiles.length > 0) {
+                tiles[boardIndex - 1].innerHTML = "";
+                
                 boardIndex--
-            }
-            if (colIndex > 0) {
                 colIndex--
+                curTiles.pop()
+                
             }
-            if (curButtons.length > 0) {
-                curButtons.pop()
-            }
+
         }
 
     }
@@ -59,8 +59,12 @@ function compareGuess(guess, arrayOfTiles) {
         // iterate through the tiles inner html and if it is the same as target make it green, if its in target make it yellow
         arrayOfTiles.forEach((currentTile, i) => {
             if (currentTile.innerHTML == target[i]) {
-                element.style.backgroundColor = "#588c4c";
-                element.style.border = "#588c4c solid"
+                currentTile.style.backgroundColor = "#588c4c";
+                currentTile.style.border = "#588c4c solid"
+            }
+            else if (target.includes(currentTile.innerHTML)) {
+                currentTile.style.backgroundColor = "#b89c3c";
+                currentTile.style.border = "#b89c3c solid"
             }
 
 
