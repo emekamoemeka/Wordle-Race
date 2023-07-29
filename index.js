@@ -2,12 +2,18 @@ const board = document.getElementById("board")
 
 const tiles = Array.from(board.querySelectorAll("div"))
 
-const target = "LENNY"
+const target = "ARRRO"
+
+
+const gameOverScreen = document.getElementById("gameOverScreen")
+
+const background = document.getElementById("darken")
+
 
 var boardIndex = 0
 var colIndex = 0
-var gameOver = false
 var curGuess = ""
+
 var curTiles = []
 
 document.addEventListener('keydown', (event)=> {  
@@ -38,42 +44,52 @@ document.addEventListener('keydown', (event)=> {
                 curTiles.pop()
                 
             }
-
         }
-
     }
 
 
 });
 
 function compareGuess(guess, arrayOfTiles) {
+    var greenTracker = [false, false, false, false, false]
+    var duplicateDetecter = target
     if (guess.toUpperCase() === target) {
         arrayOfTiles.forEach((element) => {
           element.style.backgroundColor = "#588c4c";
-          element.style.border = "#588c4c solid"
+          element.style.border = "#588c4c solid";
 
         });
-        gameOver = true;
+        gameOver()
     }
     else {
-        // iterate through the tiles inner html and if it is the same as target make it green, if its in target make it yellow
         arrayOfTiles.forEach((currentTile, i) => {
             if (currentTile.innerHTML == target[i]) {
                 currentTile.style.backgroundColor = "#588c4c";
-                currentTile.style.border = "#588c4c solid"
+                currentTile.style.border = "#588c4c solid";
+                const temp = duplicateDetecter.split('');
+                temp[i] = '0';
+                duplicateDetecter = temp.join('');
+                greenTracker[i] = true
             }
-            else if (target.includes(currentTile.innerHTML)) {
+
+        });
+        console.log(duplicateDetecter)
+
+        arrayOfTiles.forEach((currentTile, i) => {
+            if (duplicateDetecter.includes(currentTile.innerHTML) && greenTracker[i] == false) {
                 currentTile.style.backgroundColor = "#b89c3c";
+                duplicateDetecter = duplicateDetecter.replace(currentTile.innerHTML, "0", 1)
+                console.log(duplicateDetecter)
                 currentTile.style.border = "#b89c3c solid"
-            }
-
-
+        }
         });
     }
 
 }
 
-
-
-
-
+function gameOver() {
+    console.log("gameover")
+    gameOverScreen.style.visibility = 'visible'
+    background.style.visibility = 'visible'
+    
+}
