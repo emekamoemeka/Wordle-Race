@@ -58,10 +58,11 @@ document.addEventListener('keydown', (event)=> {
         
         if (boardIndex <= tiles.length) {
             if (event.key == "Backspace") {
-                unblink(tiles[boardIndex - 1])
-                if (boardIndex > 0 && colIndex >= 1 && curTiles.length > 0) {
-                    tiles[boardIndex - 1].innerHTML = "";
                 
+                if (boardIndex > 0 && colIndex >= 1 && curTiles.length > 0) {
+                    unblink(tiles[boardIndex - 1])
+                    tiles[boardIndex - 1].innerHTML = "";
+                    curGuess = curGuess.slice(0, -1)
                     boardIndex--
                     colIndex--
                     curTiles.pop()
@@ -79,20 +80,22 @@ document.addEventListener('keydown', (event)=> {
             
             }
             if (event.key == "Enter" && colIndex == 5) {
-                colIndex = 0
-                compareGuess(curGuess, curTiles)
+                if (words.includes(curGuess.toLowerCase())) {
+                    colIndex = 0
+                    compareGuess(curGuess, curTiles)
                 
-                curGuess = ""
-                curTiles = []
-                if (boardIndex == tiles.length && !gameOver){
-                    endGame("YOU LOST :(")
+                    curGuess = ""
+                    curTiles = []
+                    if (boardIndex == tiles.length && !gameOver){
+                        endGame("YOU LOST :(")
+                    }
+                }
+                else{
+                    // play some shake animation
                 }
             }
-            
         }
     }
-    
-    console.log(boardIndex)
 });
 
 // Function grades the users guessed word.
