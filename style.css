@@ -6,6 +6,7 @@
 h1 {
     display: inline;
     font-size: 40pt;
+    z-index: 100;
     
 }
 #topbar {
@@ -92,7 +93,8 @@ h1 {
 }
 .center {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 #keyboard > *{
@@ -168,4 +170,19 @@ h1 {
     background-color: black;
     opacity: 50%;
     visibility: hidden;
+}
+#replay {
+    border: none;
+    background-color: #828484;
+    position: relative;
+    color: white;
+    font-size: 15pt;
+    font-weight: bold;
+    font-family: sans-serif;
+    bottom: 50px;
+    width: 100px;
+    height: 40px;
+    border-radius: 5%;
+    visibility: hidden;
+
 }
