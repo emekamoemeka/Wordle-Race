@@ -49,8 +49,22 @@ let gameOver = false
 //_________________________________________________________________________________________//
 document.addEventListener('keydown', (event)=> {  
     if (((/[a-zA-Z]/).test(event.key) || event.key == 'Enter' || event.key == 'Backspace') && gameOver == false) {
+        
         if (boardIndex < tiles.length) {
+            if (event.key == "Backspace") {
+                unblink(tiles[boardIndex - 1])
+                if (boardIndex > 0 && colIndex >= 1 && curTiles.length > 0) {
+                    tiles[boardIndex - 1].innerHTML = "";
+                
+                    boardIndex--
+                    colIndex--
+                    curTiles.pop()
+                
+                }
+            }
+
             if (event.key.length === 1 && colIndex < 5) {
+                blink(tiles[boardIndex])
                 tiles[boardIndex].innerHTML = event.key.toUpperCase()
                 curTiles.push(tiles[boardIndex])
                 boardIndex++
@@ -65,17 +79,7 @@ document.addEventListener('keydown', (event)=> {
                 curGuess = ""
                 curTiles = []
             }
-            if (event.key == "Backspace") {
-           
-                if (boardIndex > 0 && colIndex >= 1 && curTiles.length > 0) {
-                    tiles[boardIndex - 1].innerHTML = "";
-                
-                    boardIndex--
-                    colIndex--
-                    curTiles.pop()
-                
-                }
-            }
+            
         }
     }
 });
@@ -88,17 +92,17 @@ function compareGuess(guess, arrayOfTiles) {
     if (guess.toUpperCase() === target) {
         arrayOfTiles.forEach((element) => {
           element.style.backgroundColor = "#588c4c";
-          element.style.border = "#588c4c solid";
+          element.style.border = "2px #588c4c solid";
 
         });
-        gameOver();
+        endGame();
     }
     else {
         arrayOfTiles.forEach((currentTile, i) => {
             if (currentTile.innerHTML == target[i]) {
                 //color the tile
                 currentTile.style.backgroundColor = "#588c4c";
-                currentTile.style.border = "#588c4c solid";
+                currentTile.style.border = "2px #588c4c solid";
                 //update grade tracking 
                 const temp = duplicateDetecter.split('');
                 temp[i] = '0';
@@ -115,7 +119,7 @@ function compareGuess(guess, arrayOfTiles) {
             if (duplicateDetecter.includes(currentTile.innerHTML) && greenTracker[i] == false) {
                 //color the tile
                 currentTile.style.backgroundColor = "#b89c3c";
-                currentTile.style.border = "#b89c3c solid";
+                currentTile.style.border = "2px #b89c3c solid";
                 //upgrade grade tracking
                 duplicateDetecter = duplicateDetecter.replace(currentTile.innerHTML, "0", 1);
                 console.log(duplicateDetecter);
@@ -125,8 +129,14 @@ function compareGuess(guess, arrayOfTiles) {
                 }
 
             }
-            else if (keyboard[currentTile.innerHTML][1] == false){
-                keyboard[currentTile.innerHTML][0].style.backgroundColor = "#414242";
+
+            else if (greenTracker[i] == false){
+                //color the tile
+                currentTile.style.backgroundColor = "#414242";
+                currentTile.style.border = "2px #414242 solid";
+                    if (keyboard[currentTile.innerHTML][1] == false){
+                        keyboard[currentTile.innerHTML][0].style.backgroundColor = "#414242";
+                }
             }
             
                 
@@ -139,7 +149,14 @@ function compareGuess(guess, arrayOfTiles) {
 //_________________________________________________________________________________________________//
 function endGame() {
     gameOver = true
+    console.log("gameOver")
     gameOverScreen.style.visibility = 'visible'
     background.style.visibility = 'visible'
     
+}
+function blink(currentTile){
+    currentTile.style.border = "2px #828484 solid"
+}
+function unblink(currentTile) {
+    currentTile.style.border = "2px #414242 solid"
 }
