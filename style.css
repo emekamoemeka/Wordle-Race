@@ -132,7 +132,7 @@ h1 {
     z-index: 10;
     position: fixed;
     width: 500px;
-    height: 55%;
+    height: 500px;
     background-color: #121213;
     top: 40%;
     left: 50%;
@@ -259,4 +259,47 @@ hr {
     height: 100vh;
     border-right: 0.5px solid #242424;
     box-shadow: 5px 5px 5px rgba(0,0,0,.15);
+}
+
+#miniboard {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    gap: 5px;
+    width: 170px;
+    left: 75px;
+
+
+}
+
+#miniboard > div{
+    background-color: #414242;
+    height: 30px;
+    
+}
+.numbered {
+    height: 205px;
+}
+.numbered > * {
+    font-size: 15px;
+    display: flex;
+    margin-top: 0px;
+    margin-bottom: 5px;
+    align-items: center;
+    height: 30px
+}
+.gameRecap {
+    display: flex;
+    justify-content: center;
+    width: 80%;
+    margin-left: 10%;
+}
+.gameRecap > *{
+    margin: 10px;
+}
+#gameOverScreen hr{
+    width: 80%
+}
+#gameOverScreen h6{
+    margin:20px;
 }

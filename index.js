@@ -57,7 +57,7 @@ let curTiles = []
 let gameOver = false
 replayButton.style.visibility = "hidden"
 background.style.visibility = "hidden"
-gameOverScreen.style.visibility = "hidden"
+gameOverScreen.style.visibility = "visible"
 slideInMenu.style.visibility = "hidden"
 let menuOpen = false
 
