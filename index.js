@@ -14,7 +14,7 @@ const slideInMenu = document.getElementById("slideInMenu")
 const slideInButton = document.getElementById("slideInButton")
 const correctWord = document.getElementById("correctWord")
 const miniBoard = Array.from(document.getElementById("miniboard").querySelectorAll("div"))
-
+const clock = document.getElementById("clock")
 
 let keyboard = {
     "A": [document.getElementById("A"), false],
@@ -57,6 +57,8 @@ let colIndex = 0
 let curGuess = ""
 let curTiles = []
 let gameOver = false
+let rowIndex = 0
+let globalTime = 0
 correctWord.innerHTML = "Correct Word:  " + target
 replayButton.style.visibility = "hidden"
 background.style.visibility = "hidden"
@@ -94,6 +96,7 @@ document.addEventListener('keydown', (event)=> {
 //_______________________________________________________________________________________//
 function compareGuess(guess, arrayOfTiles) {
     // Initialize variables to deal with duplicate letter edge-cases.
+    
     let greenTracker = [false, false, false, false, false];
     let duplicateDetecter = target;
     // If the guess is correct...
@@ -105,7 +108,8 @@ function compareGuess(guess, arrayOfTiles) {
 
         });
         // Make minitiles green 
-        for (let i = boardIndex; i > boardIndex - 5; i--) {
+        for (let i = boardIndex - 1; i > boardIndex - 6; i--) {
+            miniBoard[i].style.backgroundColor = "#588c4c"
             
         }
         // End the game.
@@ -125,6 +129,10 @@ function compareGuess(guess, arrayOfTiles) {
                 temp[i] = '0';
                 duplicateDetecter = temp.join('');
                 greenTracker[i] = true;
+                // Color corresponding minitile
+                miniBoard[5 * rowIndex + i].style.backgroundColor = "#588c4c"
+                console.log(5 * rowIndex + i)
+                
                 // Color the corresponding button
                 keyboard[currentTile.innerHTML][0].style.backgroundColor = "#588c4c";
                 keyboard[currentTile.innerHTML][1] = true
@@ -140,7 +148,9 @@ function compareGuess(guess, arrayOfTiles) {
                 currentTile.style.border = "2px #b89c3c solid";
                 // Update grade tracking
                 duplicateDetecter = duplicateDetecter.replace(currentTile.innerHTML, "0", 1);
-                console.log(duplicateDetecter);
+                // Color the corresponding minitile
+                miniBoard[5 * rowIndex + i].style.backgroundColor = "#b89c3c";
+                
                 // Color the corresponding button
                 if (keyboard[currentTile.innerHTML][1] == false){
                     keyboard[currentTile.innerHTML][0].style.backgroundColor = "#b89c3c";
@@ -159,6 +169,7 @@ function compareGuess(guess, arrayOfTiles) {
             }
         });
     }
+    rowIndex += 1
 }
 
 // Create an eventlistener for each button which applys its corresponding action to the baord.
@@ -262,11 +273,24 @@ exitButton.addEventListener("click", (event)=> {
 
 })
 
+// Delay function
 function Delay(duration) {
     return new Promise(resolve => {
         setTimeout(resolve, duration)
     })
 }
+
+// Timer function
+setInterval(incrementTimer, 1000)
+function incrementTimer() {
+    clock.innerHTML = globalTime
+    globalTime += 10
+    
+}
+
+
+
+
 
 // Resets game.
 //_________________________________________________________________________________________________//
@@ -309,6 +333,7 @@ function initialize() {
     curTiles = []
     gameOver = false
     menuOpen = false
+    rowIndex = 0
 
 
     correctWord.innerHTML = "Correct Word:  " + target
@@ -324,8 +349,7 @@ function initialize() {
 
       });
     miniBoard.forEach((element) => {
-        element.style.backgroundColor = "#121213";
-        element.style.border = "2px #414242 solid";
+        element.style.backgroundColor = "#414242";
         element.innerHTML = ""
 
       });

@@ -65,7 +65,7 @@ h1 {
     grid-template-rows: repeat(6, 1fr);
     gap: 7px;
     width: 356px;
-    margin-top: 100px;
+    
 
 }
 
@@ -83,12 +83,13 @@ h1 {
 
 .center {
     display: flex;
-    align-items: center;
-    flex-direction: column;
-    height: 500px;
+    justify-content: center;
+    align-items: flex-end;
+    flex-direction: row;
+    height: 520px;
 }
 #keyboard {
-    margin-top: 100px;
+    margin-top: 30px;
 }
 #keyboard > *{
     height: 60px
@@ -177,9 +178,9 @@ h1 {
     visibility: hidden;
 }
 #replay {
+    
     border: none;
     background-color: #828484;
-    position: relative;
     color: white;
     font-size: 15pt;
     font-weight: bold;
@@ -190,6 +191,11 @@ h1 {
     border-radius: 5%;
     visibility: hidden;
 
+}
+.centerReplay {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
 }
 #slideInMenu ul{
     list-style: none;
@@ -269,7 +275,6 @@ hr {
     width: 170px;
     left: 75px;
 
-
 }
 
 #miniboard > div{
@@ -302,4 +307,25 @@ hr {
 }
 #gameOverScreen h6{
     margin:20px;
+}
+
+#timer {
+    margin-left: 440px;
+    position: absolute;
+    height: 417px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#miniTimer > * {
+    color: #828484;
+}
+
+h5 {
+    margin: 0px;
+    font-size: 15pt;
+    color: #414242;
+    font-family: sans-serif;
+
 }
