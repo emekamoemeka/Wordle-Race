@@ -13,11 +13,12 @@
           <img src="images/wordleHamburger.png" alt="" />
         </button>
       </div>
-      <h1>Wordle</h1>
+      <h1>Wordle Race</h1>
       <div id="social">
-        <h2>?</h2>
+        <button id="leaderboardButton">
+          <img src="images/WordleLeaderboard.png" alt="Leaderboard button" />
+        </button>
         <h2>S</h2>
-        <h2>L</h2>
       </div>
     </div>
     <div id="slideInMenu">
@@ -83,7 +84,43 @@
         </li>
       </ul>
     </div>
+    <div id="leaderboard">
+      <h4>Leaderboard</h4>
+      <div id="rankings">
+        <div class="entry">
+          <p>1</p>
+          <div class="name"></div>
+          <p>90,000</p>
+          <p>30.00</p>
+        </div>
+        <div class="entry">
+          <p>2</p>
+          <div class="name"></div>
+          <p>90,000</p>
+          <p>30.00</p>
+        </div>
+        <div class="entry">
+          <p>3</p>
+          <div class="name"></div>
+          <p>90,000</p>
+          <p>30.00</p>
+        </div>
+        <div class="entry">
+          <p>4</p>
+          <div class="name"></div>
+          <p>90,000</p>
+          <p>30.00</p>
+        </div>
+        <div class="entry">
+          <p>5</p>
+          <div class="name"></div>
+          <p>90,000</p>
+          <p>30.00</p>
+        </div>
+      </div>
+    </div>
     <div class="center">
+      <button id="replay"><img src="images/wordleReplay.png" alt="" /></button>
       <div id="board">
         <div class="a 1"></div>
         <div class="b 1"></div>
@@ -125,9 +162,6 @@
         <h5>-:--</h5>
       </div>
     </div>
-    <div class="centerReplay">
-      <button id="replay">REPLAY</button>
-    </div>
 
     <div id="keyboard">
       <div class="row">
@@ -167,7 +201,7 @@
         </button>
       </div>
     </div>
-    <div id="gameOverScreen">
+    <div id="gameOverScreen" class="overlay">
       <button id="escape">X</button>
       <p id="finalMessage">you win</p>
       <div class="gameRecap">
@@ -220,13 +254,13 @@
           <p>--:--</p>
           <p>--:--</p>
         </div>
-        <div class="numbered points">
-          <p>+000000</p>
-          <p>+000000</p>
-          <p>+000000</p>
-          <p>+000000</p>
-          <p>+000000</p>
-          <p>+000000</p>
+        <div id="miniPoints" class="numbered points">
+          <p>+10000</p>
+          <p>+10000</p>
+          <p>+10000</p>
+          <p>+10000</p>
+          <p>+10000</p>
+          <p>+10000</p>
         </div>
       </div>
       <hr />
