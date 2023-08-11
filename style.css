@@ -146,8 +146,6 @@ h1 {
 
 }
 
-
-
 #gameOverScreen p {
     background-color: #121213;
     
@@ -184,7 +182,6 @@ h1 {
     width: 40px;
     height: 40px;
     border-radius: 5%;
-    visibility: hidden;
 
 }
 #replay img {
@@ -253,42 +250,63 @@ hr {
     border: 1px solid #818384;
     position: absolute;
     width: 400px;
-    height: 500px;
+    height: 400px;
     z-index: 10;
     right: 0px;
 
 }
 #leaderboard h4 {
     font-size: 20pt;
+    text-align: center;
     height: 20pt;
     position: relative;
-    left: 50px;
-}
-
-#rankings {
-    padding-left: 0px;
-    margin-left: 50px;
-    
-
-}
-.entry {
+    left: 100px;
+    width: 50%;
     margin-bottom: 30px;
 }
+
+
 .name {
-    margin: 30px;
-    border: 1px solid white;
-
+    width: 5rem;
+    text-align: center;
 }
-.name p {
-    display: inline;
-
-
+.time {
+    width: 3rem;
+    text-align: center;
 }
-.entry > *{
-    display: inline;
+.entry {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 30px;
+    color: #414242;
+}
+.entry > * {
+    display: inline-block;
+    font-size: 13pt;
+    margin-right: 30px;
+    color: #414242;
     
 }
+#nameEntry {
+    display: flex;
+    justify-content: center;
+    
+}
+#nameEntry > * {
+    width: 30px;
+    height: 30px;
+    height: 30px;
+    margin-left: 5px;
+    border: 2px solid #414242;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: sans-serif;
 
+}
 .comingSoon {
     margin-left: 30px;
 }
@@ -373,12 +391,22 @@ h5 {
         font-size: 25pt;
     }
     #leaderboard {
-        border: 1px solid #818384;
-        position: absolute;
+
         width: 300px;
         height: 350px;
-        right: 0px;
-        z-index: 10;
+    }
+
+    #leaderboard h4 {
+        left: 65px;
+    }
+    .entry {
+        margin-left: 10px;
+    }
+    .entry > * {
+       
+        margin-right: 10px;
+        font-size: 15px;
+        
     }
     
 }
