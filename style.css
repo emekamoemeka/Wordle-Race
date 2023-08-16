@@ -1,6 +1,6 @@
 *{
-    background-color: #121213;
-    color: white;
+    background-color: white;
+    color: black;
     font-size: 15pt;
     font-weight: bold;
     font-family: sans-serif;
@@ -18,8 +18,8 @@ h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid #414242;
-    border-top: 1px solid white;
+    border-bottom: 1px solid #818384;
+
     
 }
 #social {
@@ -78,7 +78,7 @@ h1 {
     font-size: 30px;
     font-weight: bold;
     font-family: sans-serif;
-    border: 2px solid #414242;
+    border: 2px solid #d4d6da;
     height: 60px;
     
 }
@@ -107,7 +107,7 @@ h1 {
     margin: 3px;
     border-radius: 10%;
     border: none;
-    background-color: #818384;
+    background-color: #d4d6da;
     font-weight: bolder;
 
 }
@@ -116,7 +116,7 @@ h1 {
     margin: 3px;
     border-radius: 10%;
     border: none;
-    background-color: #818384; 
+    background-color: #d4d6da; 
     font-size: 10pt;
     font-weight: bolder;
 
@@ -133,7 +133,7 @@ h1 {
     position: fixed;
     width: 500px;
     height: 500px;
-    background-color: #121213;
+    background-color: white;
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -147,12 +147,12 @@ h1 {
 }
 
 #gameOverScreen p {
-    background-color: #121213;
+    background-color: white;
     
 }
 #gameOverScreen button {
     border: none;
-    background-color: #121213;
+    background-color: white;
     font-size: 20px;
     font-family: sans-serif;
     position: absolute;
@@ -166,7 +166,7 @@ h1 {
     top: 0%;
     width: 100%;
     height: 100%;
-    background-color: black;
+    background-color: white;
     opacity: 50%;
 }
 #replay {
@@ -174,11 +174,7 @@ h1 {
     margin-right: 440px;
     position: absolute;
     border: none;
-    background-color: #828484;
-    color: white;
-    font-size: 15pt;
-    font-weight: bold;
-    font-family: sans-serif;
+    background-color: #d4d6da;
     width: 40px;
     height: 40px;
     border-radius: 5%;
@@ -223,10 +219,10 @@ h1 {
 hr {
     border: none;
     height: 1px;
-    background-color:#414242;
+    background-color:#d4d6da;
 }
 #slideInMenu div:hover {
-    background-color: #414242;
+    background-color: #818384;
     transition: 0.2s;
 }
 #slideInMenu div {
@@ -254,25 +250,25 @@ hr {
     z-index: 10;
     right: 0px;
 
-    background-color: #121213;
+    background-color: white;
     position: absolute;
-    border-left: 0.5px solid #242424;
-    border-bottom: 0.5px solid #242424;
+    border-left: 0.5px solid d4d6da;
+    border-bottom: 0.5px solid d4d6da;
     box-shadow:  -5px 5px 5px rgba(0,0,0,.15);
     z-index: 20;
 
 }
 #timerEntry {
-    color: white
+    color: black
 }
 .menu button {
-    border: 1px solid #818384;
+    border: 1px solid #d4d6da;
     width: 20px;
     height: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: black;
 }
 .menu h4 {
     font-size: 20pt;
@@ -298,18 +294,17 @@ hr {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 50px;
+    margin-left: 30px;
 }
 .entry > * {
     display: inline-block;
     font-size: 13pt;
     margin-right: 30px;
-    color: #414242;
+    color: #88898c;
 }
 .setting {
-    width: 200px;
-    margin-left: 0px;
-    color: white;
+    width: 150px;
+    color: black;
 }
 #nameEntry {
     display: flex;
@@ -321,7 +316,7 @@ hr {
     height: 30px;
     height: 30px;
     margin-left: 5px;
-    border: 2px solid #414242;
+    border: 2px solid #d4d6da;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -334,11 +329,11 @@ hr {
     margin-left: 30px;
 }
 #slideInMenu {
-    background-color: #121213;
+    background-color: white;
     position: absolute;
     width: 300px;
     height: 100vh;
-    border-right: 0.5px solid #242424;
+    border-right: 0.5px solid #d4d6da;
     box-shadow: 5px 5px 5px rgba(0,0,0,.15);
     z-index: 20;
 }
@@ -350,14 +345,15 @@ hr {
     gap: 5px;
     width: 170px;
     left: 75px;
-
+    
 }
 
 #miniboard > div{
-    background-color: #414242;
+    background-color: #d4d6da;
     height: 30px;
     
 }
+
 .numbered {
     height: 205px;
 }
@@ -377,6 +373,7 @@ hr {
 }
 .gameRecap > *{
     margin: 10px;
+    background-color: none;
 }
 #gameOverScreen hr{
     width: 80%
@@ -397,17 +394,18 @@ hr {
 #timer > * {
     width: 4rem;
     text-align: center;
+    color: #88898c;
 }
 
 #miniTimer > * {
-    color: #828484;
+    color: #88898c;
     
 }
 
 h5 {
     margin: 0px;
     font-size: 15pt;
-    color: #414242;
+    color: #d4d6da;
     font-family: sans-serif;
 
 }
