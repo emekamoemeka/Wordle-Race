@@ -18,7 +18,7 @@
         <button id="leaderboardButton">
           <img src="images/WordleLeaderboard.png" alt="Leaderboard button" />
         </button>
-        <h2>S</h2>
+        <button id="settingsButton">S</button>
       </div>
     </div>
     <div id="slideInMenu">
@@ -84,7 +84,18 @@
         </li>
       </ul>
     </div>
-    <div id="leaderboard">
+    <div id="settings" class="menu">
+      <h4>Settings</h4>
+      <div id="timerEntry" class="entry">
+        <button id="timerButton">X</button>
+        <p class="setting">Race Mode</p>
+      </div>
+      <div id="lightmodeEntry" class="entry">
+        <button id="lightmodeButton">X</button>
+        <p class="setting">Light Mode</p>
+      </div>
+    </div>
+    <div id="leaderboard" class="menu">
       <h4>Leaderboard</h4>
       <div id="rankings">
         <div class="entry">
@@ -266,7 +277,7 @@
       <hr />
       <h6 id="correctWord">correct word: TARGET</h6>
       <h6 id="totalScore">Total Score: 000000</h6>
-      <h6>Enter Name:</h6>
+      <h6 id="timerEntryLabel">Enter Name:</h6>
       <div id="nameEntry">
         <div></div>
         <div></div>

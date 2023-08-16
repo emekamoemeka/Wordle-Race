@@ -20,13 +20,20 @@ const totalScore = document.getElementById("totalScore")
 const miniPoints = Array.from(document.getElementById("miniPoints").querySelectorAll("p"))
 const leaderboard = document.getElementById("leaderboard")
 const leaderboardButton = document.getElementById("leaderboardButton")
+const settings = document.getElementById("settings")
+const settingsButton = document.getElementById("settingsButton")
 const leaderBoardScores = Array.from(document.querySelectorAll(".score"))
 const leaderBoardNames = Array.from(document.querySelectorAll(".name"))
 const leaderBoardRanks = Array.from(document.querySelectorAll(".rank"))
 const leaderBoardTimes = Array.from(document.querySelectorAll(".time"))
 const nameEntry = Array.from(document.getElementById("nameEntry").querySelectorAll("div"))
+const timerButton = document.getElementById("timerButton")
+const lightmodeButton = document.getElementById("lightmodeButton")
+const lightmodeEntry = document.getElementById("lightmodeEntry").querySelector("p")
+const timerEntry = document.getElementById("timerEntry").querySelector("p")
+const timerEntryLabel = document.getElementById("timerEntryLabel")
 
-console.log(nameEntry)
+
 let keyboard = {
     "A": [document.getElementById("A"), false],
     "B": [document.getElementById("B"), false],
@@ -75,6 +82,8 @@ background.style.visibility = "hidden"
 gameOverScreen.style.visibility = "hidden"
 slideInMenu.style.visibility = "hidden"
 leaderboard.style.visibility = "hidden"
+settings.style.visibility = "hidden"
+
 let menuOpen = false
 let score = 0
 let roundScore = 0
@@ -82,6 +91,7 @@ let prevTime = 0
 let nameIndex = 0
 let enteredName = ""
 let nameEntered = false
+let raceMode = true
 
 //When a key is pressed...
 //_________________________________________________________________________________________//
@@ -107,7 +117,8 @@ document.addEventListener('keydown', (event)=> {
             }
         }
     }
-    else if (((/[a-zA-Z]/).test(event.key) || event.key == 'Enter' || event.key == 'Backspace') && gameOver == true && nameEntered == false) {
+    else if (((/[a-zA-Z]/).test(event.key) || event.key == 'Enter' || event.key == 'Backspace') && gameOver == true && nameEntered == false && raceMode == true) {
+
         if (event.key == "Backspace" && nameIndex > 0) {
             // delete the current letter.       
             nameEntry[nameIndex - 1].innerHTML = ""
@@ -145,7 +156,6 @@ document.addEventListener('keydown', (event)=> {
                     leaderBoardScores[i].style.color = 'white'
                     leaderBoardTimes[i].style.color = 'white'
                     leaderBoardRanks[i].style.color = 'white'
-
                     break
                 }
             }
@@ -176,6 +186,7 @@ function compareGuess(guess, arrayOfTiles) {
             miniBoard[i].style.backgroundColor = "#588c4c"
             
         }
+        
         // End the game.
         roundScore += 20000
         endGame("YOU WON");
@@ -233,7 +244,10 @@ function compareGuess(guess, arrayOfTiles) {
             }
         });
     }
-    miniPoints[rowIndex].innerHTML = "+" + roundScore
+    if (raceMode) {
+        miniPoints[rowIndex].innerHTML = "+" + roundScore
+
+    }
     
     score += roundScore
     rowIndex += 1
@@ -295,13 +309,16 @@ function deleteLetter() {
 function gradeGuess() {
     if (words.includes(curGuess.toLowerCase())) {
         colIndex = 0
-        miniClock[rowIndex].innerHTML = (((globalTime)/ 1000) - 0.01).toFixed(2) 
-        miniClock[rowIndex].style.color = "white"
+        if (raceMode) {
+            miniClock[rowIndex].innerHTML = (((globalTime)/ 1000) - 0.01).toFixed(2) 
+            miniClock[rowIndex].style.color = "white"
+        }
         compareGuess(curGuess, curTiles)
     
         curGuess = ""
         curTiles = []
         if (boardIndex == tiles.length && !gameOver){
+            score = 0
             endGame("YOU LOST")
         }
         
@@ -312,9 +329,7 @@ function gradeGuess() {
 // Activates game over screen and updates leaderboard.
 //_________________________________________________________________________________________________//
 async function endGame(message) {
-    console.log(enteredName)
     clearInterval(globalClock)
-    console.log("cleared")
     gameOver = true
     await Delay(1000)
     for (let i = rowIndex; i < 6; i++) {
@@ -325,6 +340,22 @@ async function endGame(message) {
     gameOverScreen.style.visibility = 'visible'
     background.style.visibility = 'visible'
     replayButton.style.visibility = 'visible'
+    if (raceMode) {
+        timerEntryLabel.style.visibility = "visible"
+        totalScore.style.visibility = "visible"
+        nameEntry.forEach((element) => {
+            element.style.visibility = "visible"
+    
+        })
+    }
+    else {
+        timerEntryLabel.style.visibility = "hidden"
+        totalScore.style.visibility = "hidden"
+        nameEntry.forEach((element) => {
+            element.style.visibility = "hidden"
+    
+        })
+    }
 
 }
 // Blinks a tile.
@@ -344,12 +375,33 @@ exitButton.addEventListener("click", (event)=> {
     gameOverScreen.style.visibility = 'hidden'
     background.style.visibility = 'hidden'
     replayButton.style.visibility = 'visible'
+    timerEntryLabel.style.visibility = "hidden"
+    totalScore.style.visibility = "hidden"
+    nameEntry.forEach((element) => {
+        element.style.visibility = "hidden"
+    
+    })
 
 })
 
+// Opens Settings.
+//______________________________________________________________________________________________________//
+settingsButton.addEventListener("click", (event) =>{
+    leaderboard.style.visibility = 'hidden'
+    if (settings.style.visibility == 'visible') {
+        settings.style.visibility = 'hidden'
+    }
+    else {
+        settings.style.visibility = 'visible'
+    }
+
+
+})
 // Opens Leaderboard.
 //___________________________________________________________________________________________________________//
 leaderboardButton.addEventListener("click", (event) => {
+    settings.style.visibility = 'hidden'
+
     if (leaderboard.style.visibility == 'visible') {
         leaderboard.style.visibility = 'hidden'
     }
@@ -360,6 +412,40 @@ leaderboardButton.addEventListener("click", (event) => {
 
 })
 
+// Enables/disables timer 
+//________________________________________________________________________________________________________//
+timerButton.addEventListener("click", (event) => {
+    changeButtonState(timerButton, timerEntry)
+    
+    if (timerButton.innerHTML != "X") {
+        
+        raceMode = false
+        initialize()
+        clearInterval(globalClock)
+    }
+    else {
+        raceMode = true
+        initialize()
+
+    }
+})
+// Enables/disables dark mode
+lightmodeButton.addEventListener("click", (event) => {
+    changeButtonState(lightmodeButton, lightmodeEntry)
+})
+
+// Changes settings button state
+//_________________________________________________________________________________________________//
+function changeButtonState(button, entry) {
+    if (button.innerHTML != "X") {
+        button.innerHTML = "X"
+        entry.style.color = "white"
+    }
+    else {
+        button.innerHTML = ""
+        entry.style.color = "#414242"
+    }
+}
 // Delay function
 function Delay(duration) {
     return new Promise(resolve => {
@@ -383,7 +469,9 @@ function incrementTimer() {
 //_________________________________________________________________________________________________//
 function initialize() {
     clearInterval(globalClock)
-    globalClock = setInterval(incrementTimer, 10)
+    if (raceMode) {
+        globalClock = setInterval(incrementTimer, 10)
+    }
     keyboard = {
         "A": [document.getElementById("A"), false],
         "B": [document.getElementById("B"), false],
@@ -468,9 +556,18 @@ function initialize() {
         element.innerHTML = "--:--"
         element.style.color = "#414242"
     })
-    miniPoints.forEach((element) => {
-        element.innerHTML = "+10000"
-    })
+    if (raceMode) {
+        miniPoints.forEach((element) => {
+            element.innerHTML = "+10000"
+            element.style.color = "white"
+        })
+    }
+    else {
+        miniPoints.forEach((element) => {
+            element.innerHTML = "+00000"
+            element.style.color = "#414242"
+        })
+    }
 }
 replayButton.addEventListener("click" , (event)=> {  
         initialize()
