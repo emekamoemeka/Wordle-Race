@@ -488,6 +488,8 @@ lightmodeButton.addEventListener("click", (event) => {
         leaderboardSwap = "images/WordleLeaderboard.png"
         menuSwap = "images/wordleHamburger.png"
         backspaceSwap = "images/wordleBackspace.png"
+        lightmodeEntry.innerHTML = "Dark Mode"
+        
     }
     else {
         //light
@@ -502,6 +504,7 @@ lightmodeButton.addEventListener("click", (event) => {
         leaderboardSwap = "images/wordleLeaderboardLight.png"
         menuSwap = "images/wordleMenuLight.png"
         backspaceSwap = "images/wordleBackspaceLight.png"
+        lightmodeEntry.innerHTML = "Light Mode"
     }
     
     window.universal.style.backgroundColor = baseColor
