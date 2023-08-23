@@ -48,32 +48,33 @@ const menuImage = document.getElementById("slideInButton").querySelector("img")
 const backspaceImage = document.getElementById("backspace").querySelector("img")
 
 let keyboard = {
-    "A": [document.getElementById("A"), false],
-    "B": [document.getElementById("B"), false],
-    "C": [document.getElementById("C"), false],
-    "D": [document.getElementById("D"), false],
-    "E": [document.getElementById("E"), false],
-    "F": [document.getElementById("F"), false],
-    "G": [document.getElementById("G"), false],
-    "H": [document.getElementById("H"), false],
-    "I": [document.getElementById("I"), false],
-    "J": [document.getElementById("J"), false],
-    "K": [document.getElementById("K"), false],
-    "L": [document.getElementById("L"), false],
-    "M": [document.getElementById("M"), false],
-    "N": [document.getElementById("N"), false],
-    "O": [document.getElementById("O"), false],
-    "P": [document.getElementById("P"), false],
-    "Q": [document.getElementById("Q"), false],
-    "R": [document.getElementById("R"), false],
-    "S": [document.getElementById("S"), false],
-    "T": [document.getElementById("T"), false],
-    "U": [document.getElementById("U"), false],
-    "V": [document.getElementById("V"), false],
-    "W": [document.getElementById("W"), false],
-    "x": [document.getElementById("X"), false],
-    "Y": [document.getElementById("Y"), false],
-    "Z": [document.getElementById("Z"), false],
+    // 0 means no color, 1 means grey, 2 means yellow, 3 means green
+    "A": [document.getElementById("A"), false, 0],
+    "B": [document.getElementById("B"), false, 0],
+    "C": [document.getElementById("C"), false, 0],
+    "D": [document.getElementById("D"), false, 0],
+    "E": [document.getElementById("E"), false, 0],
+    "F": [document.getElementById("F"), false, 0],
+    "G": [document.getElementById("G"), false, 0],
+    "H": [document.getElementById("H"), false, 0],
+    "I": [document.getElementById("I"), false, 0],
+    "J": [document.getElementById("J"), false, 0],
+    "K": [document.getElementById("K"), false, 0],
+    "L": [document.getElementById("L"), false, 0],
+    "M": [document.getElementById("M"), false, 0],
+    "N": [document.getElementById("N"), false, 0],
+    "O": [document.getElementById("O"), false, 0],
+    "P": [document.getElementById("P"), false, 0],
+    "Q": [document.getElementById("Q"), false, 0],
+    "R": [document.getElementById("R"), false, 0],
+    "S": [document.getElementById("S"), false, 0],
+    "T": [document.getElementById("T"), false, 0],
+    "U": [document.getElementById("U"), false, 0],
+    "V": [document.getElementById("V"), false, 0],
+    "W": [document.getElementById("W"), false, 0],
+    "X": [document.getElementById("X"), false, 0],
+    "Y": [document.getElementById("Y"), false, 0],
+    "Z": [document.getElementById("Z"), false, 0],
 
 
 
@@ -107,15 +108,21 @@ let nameIndex = 0
 let enteredName = ""
 let nameEntered = false
 let raceMode = true
+let lightMode = true
+// 0 means deactivated button, 1 means activated button, 2 means grey button, 3 means yellow button, 4 means green button
+let tileStates = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 // Initialize color set
 
 //light
-let baseColor = 'white';
+let baseColor = 'white'
 let textColor = 'black'
 let borderColor = '#d4d6da'
 let buttonColor = '#d4d6da'
 let disableColor = "#88898c"
+let green = "#6aaa64"
+let yellow = "#c9b458"
+
 let settingsSwap = "images/wordleSettingsLight.png"
 let leaderboardSwap = "images/wordleLeaderboardLight.png"
 let menuSwap = "images/wordleMenuLight.png"
@@ -139,6 +146,7 @@ document.addEventListener('keydown', (event)=> {
             // If the key was a letter...
             if (event.key.length === 1 && colIndex < 5) {
                 // type the letter.
+
                 typeLetter(event.key)
             
             }
@@ -162,6 +170,7 @@ document.addEventListener('keydown', (event)=> {
         // If the key was a letter...
         if (event.key.length === 1 && nameIndex < 5) {
             // type the letter.
+            
             nameEntry[nameIndex].innerHTML = event.key.toUpperCase()
             blink(nameEntry[nameIndex])
             nameIndex += 1
@@ -213,13 +222,13 @@ function compareGuess(guess, arrayOfTiles) {
     if (guess.toUpperCase() === target) {
         // make each tile green.
         arrayOfTiles.forEach((element) => {
-          element.style.backgroundColor = "#588c4c";
-          element.style.border = "2px #588c4c solid";
+          element.style.backgroundColor = green;
+          element.style.border = "2px " + green +  " solid";
 
         });
         // Make minitiles green 
         for (let i = boardIndex - 1; i > boardIndex - 6; i--) {
-            miniBoard[i].style.backgroundColor = "#588c4c"
+            miniBoard[i].style.backgroundColor = green
             
         }
         
@@ -234,18 +243,20 @@ function compareGuess(guess, arrayOfTiles) {
             // If the letter is in the right spot...
             if (currentTile.innerHTML == target[i]) {
                 // update the tile color to green.
-                currentTile.style.backgroundColor = "#588c4c";
-                currentTile.style.border = "2px #588c4c solid";
+                currentTile.style.backgroundColor = green;
+                currentTile.style.border = "2px " + green + " solid";
+                tileStates[(rowIndex* 5) + i] = 4
                 // Update grade tracking.
                 const temp = duplicateDetecter.split('');
                 temp[i] = '0';
                 duplicateDetecter = temp.join('');
                 greenTracker[i] = true;
                 // Color corresponding minitile
-                miniBoard[5 * rowIndex + i].style.backgroundColor = "#588c4c"
+                miniBoard[5 * rowIndex + i].style.backgroundColor = green
                 
                 // Color the corresponding button
-                keyboard[currentTile.innerHTML][0].style.backgroundColor = "#588c4c";
+                keyboard[currentTile.innerHTML][0].style.backgroundColor = green;
+                keyboard[currentTile.innerHTML][2] = 3
                 keyboard[currentTile.innerHTML][1] = true
             }
 
@@ -255,30 +266,43 @@ function compareGuess(guess, arrayOfTiles) {
             // If the letter is in the target and has not yet been turned green... 
             if (duplicateDetecter.includes(currentTile.innerHTML) && greenTracker[i] == false) {
                 // Update the tile color to yellow
-                currentTile.style.backgroundColor = "#b89c3c";
-                currentTile.style.border = "2px #b89c3c solid";
+                currentTile.style.backgroundColor = yellow;
+                currentTile.style.border = "2px " + yellow +  " solid";
+                tileStates[(rowIndex* 5) + i] = 3
                 // Update grade tracking
                 duplicateDetecter = duplicateDetecter.replace(currentTile.innerHTML, "0", 1);
                 // Color the corresponding minitile
-                miniBoard[5 * rowIndex + i].style.backgroundColor = "#b89c3c";
+                miniBoard[5 * rowIndex + i].style.backgroundColor = yellow;
                 
                 // Color the corresponding button
-                if (keyboard[currentTile.innerHTML][1] == false){
-                    keyboard[currentTile.innerHTML][0].style.backgroundColor = "#b89c3c";
+                if (keyboard[currentTile.innerHTML][1] == false) {
+                    keyboard[currentTile.innerHTML][0].style.backgroundColor = yellow;
+                    keyboard[currentTile.innerHTML][2] = 2
                 }
 
             }
             // If the tile has not been colored yet...
             else if (greenTracker[i] == false){
                 // Color it grey.
-                currentTile.style.backgroundColor = "borderColor";
-                currentTile.style.border = "2px" + borderColor + "solid";
+                currentTile.style.backgroundColor = disableColor;
+                currentTile.style.border = "2px " + disableColor + " solid";
+                tileStates[(rowIndex* 5) + i] = 2
                     // Color its corresponding button
                     if (keyboard[currentTile.innerHTML][1] == false){
-                        keyboard[currentTile.innerHTML][0].style.backgroundColor = borderColor;
+                        
+                        keyboard[currentTile.innerHTML][0].style.backgroundColor = disableColor;
+                        keyboard[currentTile.innerHTML][2] = 1
                 }
             }
+            if (lightMode) {
+                keyboard[currentTile.innerHTML][0].style.color = 'white';
+            }
         });
+    }
+    if (lightMode) {
+        arrayOfTiles.forEach((currentTile) => {
+            currentTile.style.color = "white"
+        })
     }
     if (raceMode) {
         miniPoints[rowIndex].innerHTML = "+" + roundScore
@@ -287,6 +311,8 @@ function compareGuess(guess, arrayOfTiles) {
     
     score += roundScore
     rowIndex += 1
+
+
 }
 
 // Create an eventlistener for each button which applys its corresponding action to the baord.
@@ -324,10 +350,13 @@ function buttonClick(event) {
 
 function typeLetter(letter) {
     blink(tiles[boardIndex])
+    tileStates[boardIndex] = 1
     tiles[boardIndex].innerHTML = letter.toUpperCase()
     curTiles.push(tiles[boardIndex])
     boardIndex++
     colIndex++
+    
+
     curGuess = curGuess + letter
 }
 // Backspaces a letter on the board
@@ -338,6 +367,8 @@ function deleteLetter() {
     curGuess = curGuess.slice(0, -1)
     boardIndex--
     colIndex--
+    tileStates[boardIndex] = 0
+    
     curTiles.pop()
 }
 // Enters a guess for grading
@@ -399,12 +430,19 @@ async function endGame(message) {
 // Blinks a tile.
 //_________________________________________________________________________________________________//
 function blink(currentTile){
-    currentTile.style.border = "2px " + disableColor + " solid"
+    if (lightMode) {
+        currentTile.style.border = "2px " + disableColor + " solid"
+    }
+    else {
+        currentTile.style.border = "2px " + buttonColor + " solid"
+
+    }
 }
 // Unblinks a tile.
 //_________________________________________________________________________________________________//
 function unblink(currentTile) {
     currentTile.style.border = "2px " + borderColor + " solid"
+    
 }
 
 // Exits winscreen.
@@ -465,7 +503,7 @@ timerButton.addEventListener("click", (event) => {
     }
     else {
         raceMode = true
-        
+    
         timerButton.innerHTML = "X"
         timerEntry.style.color = textColor
         initialize()
@@ -475,13 +513,15 @@ timerButton.addEventListener("click", (event) => {
 // Enables/disables dark mode
 lightmodeButton.addEventListener("click", (event) => {
 
-    if (textColor == "black") {
+    if (lightMode) {
         //dark
         baseColor = "#121213";
         textColor = 'white'
         borderColor = "#414242"
         buttonColor = "#818384"
-        disableColor = "#818384"
+        disableColor = "#414242"
+        green = "#588c4c"
+        yellow = "#b89c3c"
         lightmodeEntry.style.color = disableColor
         lightmodeButton.innerHTML = ""
         settingsSwap = "images/WordleSettings.png"
@@ -489,15 +529,19 @@ lightmodeButton.addEventListener("click", (event) => {
         menuSwap = "images/wordleHamburger.png"
         backspaceSwap = "images/wordleBackspace.png"
         lightmodeEntry.innerHTML = "Dark Mode"
+        lightMode = false
         
     }
     else {
         //light
+        lightMode = true
         baseColor = 'white';
         textColor = 'black'
         borderColor = '#d4d6da'
         buttonColor = '#d4d6da'
         disableColor = "#818384"
+        green = "#6aaa64"
+        yellow = "#c9b458"
         lightmodeEntry.style.color = textColor
         lightmodeButton.innerHTML = "X"
         settingsSwap = "images/wordleSettingsLight.png"
@@ -506,28 +550,86 @@ lightmodeButton.addEventListener("click", (event) => {
         backspaceSwap = "images/wordleBackspaceLight.png"
         lightmodeEntry.innerHTML = "Light Mode"
     }
-    
+
     window.universal.style.backgroundColor = baseColor
     window.universal.style.color = textColor
     slideInMenu.style.backgroundColor = baseColor
-    tiles.forEach((element) => {
-        element.style.backgroundColor = baseColor;
-        element.style.border = "2px " + borderColor + " solid";
+    background.style.backgroundColor = baseColor
+    for (let i = 0; i < 30; i++){
+        tiles[i].style.color = textColor
+        if (tileStates[i] == 0) {
+            
+            tiles[i].style.backgroundColor = baseColor;
+            tiles[i].style.border = "2px " + borderColor + " solid";
+        }
+        else if (tileStates[i] == 1) {
+            tiles[i].style.backgroundColor = baseColor;
+            if (lightMode) {
+                tiles[i].style.border = "2px " + disableColor + " solid";
+            }
+            else {
+            tiles[i].style.border = "2px " + buttonColor + " solid";
+            }
+        }
+        else if (tileStates[i] == 2) {
+            tiles[i].style.backgroundColor = disableColor;
+            tiles[i].style.border = "2px " + disableColor + " solid";
+            if (lightMode) {
+                tiles[i].style.color = 'white'
+            }
+        } else if (tileStates[i] == 3) {
+            tiles[i].style.backgroundColor = yellow;
+            tiles[i].style.border = "2px " + yellow + " solid";
+            if (lightMode) {
+                tiles[i].style.color = 'white'
+            }
+        }
+        else if (tileStates[i] == 4){
+            tiles[i].style.backgroundColor = green;
+            tiles[i].style.border = "2px " + green + " solid";
+            if (lightMode) {
+                tiles[i].style.color = 'white'
+            }
+        }
 
-      });
+
+    }
     keyboardButtons.forEach((element) => {
         element.style.backgroundColor = buttonColor;
         element.style.color = textColor;
+        if (element.innerHTML.length == 1 ) {
+
+            if (keyboard[element.innerHTML][2] == 1) {
+                keyboard[element.innerHTML][0].style.backgroundColor = disableColor
+            }
+            else if (keyboard[element.innerHTML][2] == 2) {
+                keyboard[element.innerHTML][0].style.backgroundColor = yellow
+
+            }
+            else if (keyboard[element.innerHTML][2] == 3) {
+                keyboard[element.innerHTML][0].style.backgroundColor = green
+                console.log("green")
+
+            }
+
+            if (lightMode && keyboard[element.innerHTML][2] != 0) {
+                keyboard[element.innerHTML][0].style.color = 'white'
+            }
+    }
         
     
     })
     replayButton.style.backgroundColor = buttonColor;
     leaderboard.style.backgroundColor = baseColor;
     settings.style.backgroundColor = baseColor;
-    timerButton.style.color = textColor
+    timerButton.style.color = textColor;
+
+    for (let i = 0; i < rowIndex; i ++) {
+        clock[i].style.color = textColor
+    }
+    
     if (raceMode) {
         timerEntry.style.color = textColor;
-        console.log(textColor)
         
     }
     else {
@@ -539,7 +641,9 @@ lightmodeButton.addEventListener("click", (event) => {
     updateLeaderboardElements(leaderBoardTimes)
     gameOverScreen.style.backgroundColor = baseColor
 
-    
+    for (let i = rowIndex + 1; i < 6; i++) {
+        clock[i].style.color = disableColor
+    }
     
     miniClock.forEach((element) => {
         element.style.color = disableColor
@@ -547,7 +651,7 @@ lightmodeButton.addEventListener("click", (event) => {
     })
 
     miniPoints.forEach((element) => {
-        element.style.color = disableColor
+        element.style.color = textColor
         element.style.backgroundColor = baseColor
     })
 
@@ -560,9 +664,16 @@ lightmodeButton.addEventListener("click", (event) => {
     exitButton.style.color = textColor
     nameEntry.forEach((element) => {
         element.style.backgroundColor = baseColor;
-        element.style.border = "2px" + borderColor  + "solid";
+        element.style.border = "2px " + borderColor  + " solid";
+        element.style.color = textColor
+
 
     })
+    miniBoard.forEach((element) => {
+        element.style.backgroundColor = borderColor;
+        element.innerHTML = ""
+
+      });
     
     leaderboardImage.src = leaderboardSwap
     menuImage.src = menuSwap
@@ -573,18 +684,6 @@ lightmodeButton.addEventListener("click", (event) => {
 
 })
 
-// Changes settings button state
-//_________________________________________________________________________________________________//
-function changeButtonState(button, entry) {
-    if (button.innerHTML != "X") {
-        button.innerHTML = "X"
-        entry.style.color = textColor
-    }
-    else {
-        button.innerHTML = ""
-        entry.style.color = borderColor
-    }
-}
 // Delay function
 function Delay(duration) {
     return new Promise(resolve => {
@@ -596,7 +695,9 @@ function Delay(duration) {
 function incrementTimer() {
     clock[rowIndex].innerHTML = (globalTime / 1000).toFixed(2)
     globalTime += 10
-    clock[rowIndex].style.color = textColor
+    for (let i = 0; i < rowIndex + 1; i ++) {
+        clock[i].style.color = textColor
+    }
 
 }
 
@@ -617,34 +718,35 @@ function initialize() {
         globalClock = setInterval(incrementTimer, 10)
     }
     keyboard = {
-        "A": [document.getElementById("A"), false],
-        "B": [document.getElementById("B"), false],
-        "C": [document.getElementById("C"), false],
-        "D": [document.getElementById("D"), false],
-        "E": [document.getElementById("E"), false],
-        "F": [document.getElementById("F"), false],
-        "G": [document.getElementById("G"), false],
-        "H": [document.getElementById("H"), false],
-        "I": [document.getElementById("I"), false],
-        "J": [document.getElementById("J"), false],
-        "K": [document.getElementById("K"), false],
-        "L": [document.getElementById("L"), false],
-        "M": [document.getElementById("M"), false],
-        "N": [document.getElementById("N"), false],
-        "O": [document.getElementById("O"), false],
-        "P": [document.getElementById("P"), false],
-        "Q": [document.getElementById("Q"), false],
-        "R": [document.getElementById("R"), false],
-        "S": [document.getElementById("S"), false],
-        "T": [document.getElementById("T"), false],
-        "U": [document.getElementById("U"), false],
-        "V": [document.getElementById("V"), false],
-        "W": [document.getElementById("W"), false],
-        "x": [document.getElementById("X"), false],
-        "Y": [document.getElementById("Y"), false],
-        "Z": [document.getElementById("Z"), false],
+        "A": [document.getElementById("A"), false, 0],
+        "B": [document.getElementById("B"), false, 0],
+        "C": [document.getElementById("C"), false, 0],
+        "D": [document.getElementById("D"), false, 0],
+        "E": [document.getElementById("E"), false, 0],
+        "F": [document.getElementById("F"), false, 0],
+        "G": [document.getElementById("G"), false, 0],
+        "H": [document.getElementById("H"), false, 0],
+        "I": [document.getElementById("I"), false, 0],
+        "J": [document.getElementById("J"), false, 0],
+        "K": [document.getElementById("K"), false, 0],
+        "L": [document.getElementById("L"), false, 0],
+        "M": [document.getElementById("M"), false, 0],
+        "N": [document.getElementById("N"), false, 0],
+        "O": [document.getElementById("O"), false, 0],
+        "P": [document.getElementById("P"), false, 0],
+        "Q": [document.getElementById("Q"), false, 0],
+        "R": [document.getElementById("R"), false, 0],
+        "S": [document.getElementById("S"), false, 0],
+        "T": [document.getElementById("T"), false, 0],
+        "U": [document.getElementById("U"), false, 0],
+        "V": [document.getElementById("V"), false, 0],
+        "W": [document.getElementById("W"), false, 0],
+        "X": [document.getElementById("X"), false, 0],
+        "Y": [document.getElementById("Y"), false, 0],
+        "Z": [document.getElementById("Z"), false, 0],
     }
     
+    tileStates = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     target = words[Math.floor(Math.random() * words.length)].toUpperCase()
     console.log(target)
     
@@ -676,6 +778,7 @@ function initialize() {
     
     tiles.forEach((element) => {
         element.style.backgroundColor = baseColor;
+        element.style.color = textColor;
         element.style.border = "2px " + borderColor + " solid";
         element.innerHTML = ""
 
@@ -688,6 +791,7 @@ function initialize() {
     
     keyboardButtons.forEach((element) => {
         element.style.backgroundColor = buttonColor;
+        element.style.color = textColor;
     
     })
 
@@ -700,6 +804,7 @@ function initialize() {
         element.innerHTML = "--:--"
         element.style.color = borderColor
     })
+
     if (raceMode) {
         miniPoints.forEach((element) => {
             element.innerHTML = "+10000"
