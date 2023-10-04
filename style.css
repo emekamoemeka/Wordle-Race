@@ -8,8 +8,6 @@
 h1 {
     display: inline;
     font-size: 35pt;
-    z-index: 1;
-
     
 }
 #topbar {
@@ -39,7 +37,6 @@ h1 {
     border: none;
 }
 #slideInContainter button {
-    z-index: 10;
     position: relative;
     left: 10px;
     border: none;
@@ -247,16 +244,13 @@ hr {
     position: absolute;
     width: 400px;
     height: 400px;
-    z-index: 10;
     right: 0px;
-
     background-color: white;
     position: absolute;
-    border-left: 0.5px solid d4d6da;
-    border-bottom: 0.5px solid d4d6da;
-    box-shadow:  -5px 5px 5px rgba(0,0,0,.15);
-    z-index: 20;
-
+    border-left: 0.5px solid #d4d6da;
+    border-bottom: 0.5px solid #d4d6da;
+    box-shadow: -5px 5px 5px rgba(0,0,0,.15);
+    z-index: 2;
 }
 #timerEntry {
     color: black
@@ -335,7 +329,7 @@ hr {
     height: 100vh;
     border-right: 0.5px solid #d4d6da;
     box-shadow: 5px 5px 5px rgba(0,0,0,.15);
-    z-index: 20;
+    z-index: 1;
 }
 
 #miniboard {

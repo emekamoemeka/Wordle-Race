@@ -129,7 +129,6 @@ let menuSwap = "images/wordleMenuLight.png"
 let backspaceSwap = "images/wordleBackspaceLight.png"
 
         
-console.log(target)
 
 
 //When a key is pressed...
@@ -212,7 +211,6 @@ document.addEventListener('keydown', (event)=> {
                     while (i < leaderIndex - 1) {
                         // move index
                         i += 1
-                        console.log("the backlog name is: " + LBBacklog[0])
                         // store current index
                         let temp = [leaderBoardNames[i].innerHTML, leaderBoardScores[i].innerHTML, leaderBoardTimes[i].innerHTML]
 
@@ -260,7 +258,11 @@ function compareGuess(guess, arrayOfTiles) {
             miniBoard[i].style.backgroundColor = green
             
         }
-
+        // mark the correct tiles tileStates
+        for(let i = rowIndex * 5; i < (rowIndex * 5) + 5; i++) {
+            tileStates[i] = 4
+        }
+        
         // End the game.
         roundScore += 20000
         endGame("YOU WON");
@@ -274,7 +276,7 @@ function compareGuess(guess, arrayOfTiles) {
                 // update the tile color to green.
                 currentTile.style.backgroundColor = green;
                 currentTile.style.border = "2px " + green + " solid";
-                tileStates[(rowIndex* 5) + i] = 4
+                tileStates[(rowIndex * 5) + i] = 4
                 // Update grade tracking.
                 const temp = duplicateDetecter.split('');
                 temp[i] = '0';
@@ -559,6 +561,8 @@ lightmodeButton.addEventListener("click", (event) => {
         backspaceSwap = "images/wordleBackspace.png"
         lightmodeEntry.innerHTML = "Dark Mode"
         lightMode = false
+        slideInMenu.style.boxShadow = "5px 5px 5px rgba(0,0,0,.85)"
+        
         
     }
     else {
@@ -578,12 +582,14 @@ lightmodeButton.addEventListener("click", (event) => {
         menuSwap = "images/wordleMenuLight.png"
         backspaceSwap = "images/wordleBackspaceLight.png"
         lightmodeEntry.innerHTML = "Light Mode"
+        slideInMenu.style.boxShadow = "5px 5px 5px rgba(0,0,0,.15)"
     }
 
     window.universal.style.backgroundColor = baseColor
     window.universal.style.color = textColor
     slideInMenu.style.backgroundColor = baseColor
     background.style.backgroundColor = baseColor
+
     for (let i = 0; i < 30; i++){
         tiles[i].style.color = textColor
         if (tileStates[i] == 0) {
@@ -606,6 +612,7 @@ lightmodeButton.addEventListener("click", (event) => {
             if (lightMode) {
                 tiles[i].style.color = 'white'
             }
+
         } else if (tileStates[i] == 3) {
             tiles[i].style.backgroundColor = yellow;
             tiles[i].style.border = "2px " + yellow + " solid";
@@ -620,7 +627,6 @@ lightmodeButton.addEventListener("click", (event) => {
                 tiles[i].style.color = 'white'
             }
         }
-
 
     }
     keyboardButtons.forEach((element) => {
@@ -637,7 +643,6 @@ lightmodeButton.addEventListener("click", (event) => {
             }
             else if (keyboard[element.innerHTML][2] == 3) {
                 keyboard[element.innerHTML][0].style.backgroundColor = green
-                console.log("green")
 
             }
 
@@ -672,12 +677,22 @@ lightmodeButton.addEventListener("click", (event) => {
 
     for (let i = rowIndex + 1; i < 6; i++) {
         clock[i].style.color = disableColor
+        miniClock[i].style.backgroundColor = baseColor
+
     }
-    
-    miniClock.forEach((element) => {
-        element.style.color = disableColor
-        element.style.backgroundColor = baseColor
-    })
+    i = 0
+    while (i <= rowIndex) {
+        miniClock[i].style.color = textColor
+        miniClock[i].style.backgroundColor = baseColor
+        i += 1
+    }
+
+    while (i <= 5) {
+        miniClock[i].style.color = disableColor
+        miniClock[i].style.backgroundColor = baseColor
+
+        i += 1
+    }
 
     miniPoints.forEach((element) => {
         element.style.color = textColor
@@ -687,10 +702,12 @@ lightmodeButton.addEventListener("click", (event) => {
     miniNumbers.forEach((element) => {
         element.style.backgroundColor = baseColor
     })
+
     finalMessage.style.backgroundColor = baseColor
     finalMessage.style.color = textColor
     exitButton.style.backgroundColor = baseColor
     exitButton.style.color = textColor
+
     nameEntry.forEach((element) => {
         element.style.backgroundColor = baseColor;
         element.style.border = "2px " + borderColor  + " solid";
@@ -698,19 +715,29 @@ lightmodeButton.addEventListener("click", (event) => {
 
 
     })
-    miniBoard.forEach((element) => {
-        element.style.backgroundColor = borderColor;
-        element.innerHTML = ""
+    
+    //updates miniboard
+    for (let i = 0; i < 30; i++) {
+        miniBoard[i].style.backgroundColor = borderColor;
+        if (tileStates[i] == 0 || tileStates[i] == 1 || tileStates[i] == 2) {
+            miniBoard[i].style.backgroundColor = buttonColor;
+        }
 
-      });
+        else if (tileStates[i] == 3) {
+            miniBoard[i].style.backgroundColor = yellow;
+
+        }
+        else {
+            miniBoard[i].style.backgroundColor = green;
+
+        }
+
+    }
     
     leaderboardImage.src = leaderboardSwap
     menuImage.src = menuSwap
     backspaceImage.src = backspaceSwap
     settingsImage.src = settingsSwap
-
-    
-
 })
 
 // Delay function
