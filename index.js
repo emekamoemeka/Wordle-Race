@@ -129,7 +129,7 @@ let menuSwap = "images/wordleMenuLight.png"
 let backspaceSwap = "images/wordleBackspaceLight.png"
 
         
-
+console.log(target)
 
 
 //When a key is pressed...
@@ -185,7 +185,6 @@ document.addEventListener('keydown', (event)=> {
                 nameEntry[i].style.border = "2px solid" + buttonColor
                 nameEntry[i].style.color = textColor
                 
-
             }
             nameEntered = true
             for (let i = 0; i < 5; i++) {
@@ -193,21 +192,51 @@ document.addEventListener('keydown', (event)=> {
                     if (leaderIndex < 5) {
                         leaderIndex += 1
                     }
-                    
-                    leaderBoardScores[i].innerHTML = score
-                    leaderBoardNames[i].innerHTML = enteredName
-                    leaderBoardTimes[i].innerHTML = (((globalTime)/ 1000) - 0.01).toFixed(2)
+
+                    // color all the leaderboard elements at that rank
                     leaderBoardNames[i].style.color = textColor
                     leaderBoardScores[i].style.color = textColor
                     leaderBoardTimes[i].style.color = textColor
                     leaderBoardRanks[i].style.color = textColor
+                    
+                    // store current indexs score
+                    let LBBacklog = [leaderBoardNames[i].innerHTML, leaderBoardScores[i].innerHTML, leaderBoardTimes[i].innerHTML]
+
+                    // put new score at curent score 
+                    leaderBoardScores[i].innerHTML = score
+                    leaderBoardNames[i].innerHTML = enteredName
+                    leaderBoardTimes[i].innerHTML = (((globalTime)/ 1000) - 0.01).toFixed(2)
+
+            // Move current scores down one slot
+                    // while i < leaderIndex:
+                    while (i < leaderIndex - 1) {
+                        // move index
+                        i += 1
+                        console.log("the backlog name is: " + LBBacklog[0])
+                        // store current index
+                        let temp = [leaderBoardNames[i].innerHTML, leaderBoardScores[i].innerHTML, leaderBoardTimes[i].innerHTML]
+
+                         // put stored score at curent index
+                        leaderBoardNames[i].innerHTML = LBBacklog[0]
+                        leaderBoardScores[i].innerHTML = LBBacklog[1]
+                        leaderBoardTimes[i].innerHTML = LBBacklog[2]
+
+                        //udate backlog
+                        LBBacklog = temp
+
+                        // color all the leaderboard elements at that rank
+                        leaderBoardNames[i].style.color = textColor
+                        leaderBoardScores[i].style.color = textColor
+                        leaderBoardTimes[i].style.color = textColor
+                        leaderBoardRanks[i].style.color = textColor
+                    }
+                   
+                    // stop updating leaderboard
                     break
                 }
             }
         }
-
     }
-
 });
 
 // Function grades the users guessed word.
@@ -231,7 +260,7 @@ function compareGuess(guess, arrayOfTiles) {
             miniBoard[i].style.backgroundColor = green
             
         }
-        
+
         // End the game.
         roundScore += 20000
         endGame("YOU WON");
