@@ -128,8 +128,10 @@ let menuSwap = "images/wordleMenuLight.png"
 let backspaceSwap = "images/wordleBackspaceLight.png"
 
         
-
-
+// randomly choose a light theme
+if (Math.random() > 0.5) {
+    changeColor()
+}
 //When a key is pressed...
 //_________________________________________________________________________________________//
 document.addEventListener('keydown', (event)=> {  
@@ -307,8 +309,10 @@ function deleteLetter() {
 // guess - curGuess, arrayOfTiles = curTiles
 
 async function gradeGuess() {
+
+    
+
     // if the guess is a word
-    console.log(curTiles)
     if (words.includes(curGuess.toLowerCase())) {
         // update clocks
         colIndex = 0
@@ -317,10 +321,11 @@ async function gradeGuess() {
             miniClock[rowIndex].style.color = textColor
         }
 
+        
+
         // Initialize variables to deal with duplicate letter edge-cases.
         prevTime = globalTime - prevTime 
         roundScore = Math.max(0, (10000 - ((prevTime * 3))/10).toFixed(0))
-        let greenTracker = [false, false, false, false, false];
         let duplicateDetecter = target;
         // If the guess is correct end the game
         if (curGuess.toUpperCase() === target) {
@@ -339,77 +344,96 @@ async function gradeGuess() {
             roundScore += 20000
             endGame("YOU WON");
         }   
-        // If the guess is incorrect...
+        // If the guess is incorrect store the neccesary colors for the buttons
         else {
+
             // Iterate throgh each tile.
             curTiles.forEach((currentTile, i) => {
                 // If the letter is in the right spot...
                 if (currentTile.innerHTML == target[i]) {
-                    // update the tile color to green.
-                    currentTile.style.backgroundColor = green;
-                    currentTile.style.border = "2px " + green + " solid";
+                    // update the tile color to green.             
                     tileStates[(rowIndex * 5) + i] = 4
                     // Update grade tracking.
                     const temp = duplicateDetecter.split('');
                     temp[i] = '0';
                     duplicateDetecter = temp.join('');
-                    greenTracker[i] = true;
                     // Color corresponding minitile
                     miniBoard[5 * rowIndex + i].style.backgroundColor = green
                 
-                    // Color the corresponding button
-                    keyboard[currentTile.innerHTML][0].style.backgroundColor = green;
-                    keyboard[currentTile.innerHTML][2] = 3
-                    keyboard[currentTile.innerHTML][1] = true
+                    
                 }
 
             });
             // Iterate throgh each tile again.
             curTiles.forEach((currentTile, i) => {
                 // If the letter is in the target and has not yet been turned green... 
-                if (duplicateDetecter.includes(currentTile.innerHTML) && greenTracker[i] == false) {
+                if (duplicateDetecter.includes(currentTile.innerHTML) && tileStates[(rowIndex * 5) + i] != 4) {
                     // Update the tile color to yellow
-                    currentTile.style.backgroundColor = yellow;
-                    currentTile.style.border = "2px " + yellow +  " solid";
                     tileStates[(rowIndex* 5) + i] = 3
                     // Update grade tracking
                     duplicateDetecter = duplicateDetecter.replace(currentTile.innerHTML, "0", 1);
                     // Color the corresponding minitile
                     miniBoard[5 * rowIndex + i].style.backgroundColor = yellow;
                 
-                    // Color the corresponding button
-                    if (keyboard[currentTile.innerHTML][1] == false) {
-                        keyboard[currentTile.innerHTML][0].style.backgroundColor = yellow;
-                        keyboard[currentTile.innerHTML][2] = 2
-                        keyboard[currentTile.innerHTML][1] = true
-                    }
 
                 }
                 // If the tile has not been colored yet...
-                else if (greenTracker[i] == false){
+                else if (tileStates[(rowIndex * 5) + i] != 4){
                     // Color it grey.
-                    currentTile.style.backgroundColor = disableColor;
-                    currentTile.style.border = "2px " + disableColor + " solid";
                     tileStates[(rowIndex* 5) + i] = 2
-                        // Color its corresponding button
-                        if (keyboard[currentTile.innerHTML][1] == false){
-                            keyboard[currentTile.innerHTML][0].style.backgroundColor = disableColor;
-                            keyboard[currentTile.innerHTML][2] = 1
-                    }
+                        
                 }
-                if (lightMode) {
-                   keyboard[currentTile.innerHTML][0].style.color = 'white';
-                }
+                
             });
         }
-        if (lightMode) {
-            curTiles.forEach((currentTile) => {
-                currentTile.style.color = "white"
-            })
-        }
+
         if (raceMode) {
             miniPoints[rowIndex].innerHTML = "+" + roundScore
 
+        }
+                    
+        // apply the colors and the animation
+        for (let i = boardIndex - 1; i > boardIndex - 6; i--) {
+            if (lightMode){
+                tiles[i].style.color = "white"
+            }
+            if (lightMode) {
+                keyboard[tiles[i].innerHTML][0].style.color = 'white';
+            }
+            tiles[i].style.transform = 'scale(1.05)'
+            if (tileStates[i] == 2){
+                //color the tile and button grey
+                tiles[i].style.backgroundColor = disableColor;
+                tiles[i].style.border = "2px " + disableColor + " solid";
+                // Color its corresponding button
+                if (keyboard[tiles[i].innerHTML][1] == false) {
+                    keyboard[tiles[i].innerHTML][0].style.backgroundColor = disableColor;
+                    keyboard[tiles[i].innerHTML][2] = 1
+                }
+
+            }
+            else if (tileStates[i] == 3) {
+                // color the tile yellow
+                tiles[i].style.backgroundColor = yellow;
+                tiles[i].style.border = "2px " + yellow +  " solid";
+                // Color the corresponding button
+                if (keyboard[tiles[i].innerHTML][1] == false) {
+                    keyboard[tiles[i].innerHTML][0].style.backgroundColor = yellow;
+                    keyboard[tiles[i].innerHTML][2] = 2
+                    keyboard[tiles[i].innerHTML][1] = true
+                }
+            }
+            else if (tileStates[i] == 4) {
+                // color the tile and button green
+                tiles[i].style.backgroundColor = green;
+                tiles[i].style.border = "2px " + green +  " solid";
+                // Color the corresponding button
+                keyboard[tiles[i].innerHTML][0].style.backgroundColor = green;
+                keyboard[tiles[i].innerHTML][2] = 3
+                keyboard[tiles[i].innerHTML][1] = true
+            }
+            await Delay(50)
+            tiles[i].style.transform = 'scale(1.0)'
         }
     
         score += roundScore
@@ -422,17 +446,24 @@ async function gradeGuess() {
         if (boardIndex == tiles.length && !gameOver){
             score = 0
             endGame("YOU LOST")
-        }
+        } 
 
-        
+    // If word not in wor list play some shake animation
     } else {
-        // play some shake animation
-        console.log(boardIndex)
-        for (let i = boardIndex - 1; i > boardIndex - 6; i--) {
-            tiles[i].style.transform = 'scale(1.1)'
-            await Delay(50)
-            tiles[i].style.transform = 'scale(1.0)'
-
+        for (let i = 1; i < 6; i++) {
+            tiles[boardIndex - i].style.transform = 'scale(0.9)'
+        }
+        await Delay(50)
+        for (let i = 1; i < 6; i++) {
+            tiles[boardIndex - i].style.transform = 'scale(1.0)'
+        }
+        await Delay(100)
+        for (let i = 1; i < 6; i++) {
+            tiles[boardIndex - i].style.transform = 'scale(0.9)'
+        }
+        await Delay(50)
+        for (let i = 1; i < 6; i++) {
+            tiles[boardIndex - i].style.transform = 'scale(1.0)'
         }
     }
     
@@ -473,7 +504,7 @@ async function endGame(message) {
 }
 // Blinks a tile.
 //_________________________________________________________________________________________________//
-function blink(currentTile){
+async function blink(currentTile){
     if (lightMode) {
         currentTile.style.border = "2px " + disableColor + " solid"
     }
@@ -481,11 +512,26 @@ function blink(currentTile){
         currentTile.style.border = "2px " + buttonColor + " solid"
 
     }
+
+    // blink
+    currentTile.style.transform = 'scale(0.95)'
+    await Delay(50)
+    currentTile.style.transform = "scale(1.05)"
+    await Delay(50)
+    currentTile.style.transform = "scale(1.0)"
+
+
 }
 // Unblinks a tile.
 //_________________________________________________________________________________________________//
-function unblink(currentTile) {
+async function unblink(currentTile) {
     currentTile.style.border = "2px " + borderColor + " solid"
+
+    currentTile.style.transform = 'scale(1..05)'
+    await Delay(50)
+    currentTile.style.transform = "scale(0.95)"
+    await Delay(50)
+    currentTile.style.transform = "scale(1.0)"
     
 }
 
@@ -555,7 +601,10 @@ timerButton.addEventListener("click", (event) => {
     }
 })
 // Enables/disables dark mode
-lightmodeButton.addEventListener("click", (event) => {
+
+lightmodeButton.addEventListener("click", (changeColor));
+
+function changeColor() {
 
     if (lightMode) {
         //dark
@@ -751,7 +800,7 @@ lightmodeButton.addEventListener("click", (event) => {
     menuImage.src = menuSwap
     backspaceImage.src = backspaceSwap
     settingsImage.src = settingsSwap
-})
+}
 
 // Delay function
 function Delay(duration) {
