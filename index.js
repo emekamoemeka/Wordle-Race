@@ -48,6 +48,7 @@ const menuImage = document.getElementById("slideInButton").querySelector("img")
 const backspaceImage = document.getElementById("backspace").querySelector("img")
 const historyButton = document.getElementById("historyButton")
 const historyLog = document.getElementById("historyLog")
+const historyPoints = Array.from(document.getElementById("slideInMenu").querySelectorAll("h5")) //+ Array.from(historyLog.querySelectorAll("h5"))
 
 let keyboard = {
     // 0 means no color, 1 means grey, 2 means yellow, 3 means green
@@ -674,6 +675,11 @@ function changeColor() {
     window.universal.style.color = textColor
     slideInMenu.style.backgroundColor = baseColor
     background.style.backgroundColor = baseColor
+
+    
+    for (let i = 0; i < historyPoints.length; i++) {
+        historyPoints[i].style.color = textColor
+    }
 
     for (let i = 0; i < 30; i++){
         tiles[i].style.color = textColor
