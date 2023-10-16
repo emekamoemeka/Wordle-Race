@@ -238,110 +238,9 @@ document.addEventListener('keydown', (event)=> {
 
 // Function grades the users guessed word.
 //_______________________________________________________________________________________//
+
 function compareGuess(guess, arrayOfTiles) {
-    // Initialize variables to deal with duplicate letter edge-cases.
-    prevTime = globalTime - prevTime 
-    roundScore = Math.max(0, (10000 - ((prevTime * 3))/10).toFixed(0))
-    let greenTracker = [false, false, false, false, false];
-    let duplicateDetecter = target;
-    // If the guess is correct...
-    if (guess.toUpperCase() === target) {
-        // make each tile green.
-        arrayOfTiles.forEach((element) => {
-          element.style.backgroundColor = green;
-          element.style.border = "2px " + green +  " solid";
-
-        });
-        // Make minitiles green 
-        for (let i = boardIndex - 1; i > boardIndex - 6; i--) {
-            miniBoard[i].style.backgroundColor = green
-            
-        }
-        // mark the correct tiles tileStates
-        for(let i = rowIndex * 5; i < (rowIndex * 5) + 5; i++) {
-            tileStates[i] = 4
-        }
-        
-        // End the game.
-        roundScore += 20000
-        endGame("YOU WON");
-    }
-    // If the guess is incorrect...
-    else {
-        // Iterate throgh each tile.
-        arrayOfTiles.forEach((currentTile, i) => {
-            // If the letter is in the right spot...
-            if (currentTile.innerHTML == target[i]) {
-                // update the tile color to green.
-                currentTile.style.backgroundColor = green;
-                currentTile.style.border = "2px " + green + " solid";
-                tileStates[(rowIndex * 5) + i] = 4
-                // Update grade tracking.
-                const temp = duplicateDetecter.split('');
-                temp[i] = '0';
-                duplicateDetecter = temp.join('');
-                greenTracker[i] = true;
-                // Color corresponding minitile
-                miniBoard[5 * rowIndex + i].style.backgroundColor = green
-                
-                // Color the corresponding button
-                keyboard[currentTile.innerHTML][0].style.backgroundColor = green;
-                keyboard[currentTile.innerHTML][2] = 3
-                keyboard[currentTile.innerHTML][1] = true
-            }
-
-        });
-        // Iterate throgh each tile again.
-        arrayOfTiles.forEach((currentTile, i) => {
-            // If the letter is in the target and has not yet been turned green... 
-            if (duplicateDetecter.includes(currentTile.innerHTML) && greenTracker[i] == false) {
-                // Update the tile color to yellow
-                currentTile.style.backgroundColor = yellow;
-                currentTile.style.border = "2px " + yellow +  " solid";
-                tileStates[(rowIndex* 5) + i] = 3
-                // Update grade tracking
-                duplicateDetecter = duplicateDetecter.replace(currentTile.innerHTML, "0", 1);
-                // Color the corresponding minitile
-                miniBoard[5 * rowIndex + i].style.backgroundColor = yellow;
-                
-                // Color the corresponding button
-                if (keyboard[currentTile.innerHTML][1] == false) {
-                    keyboard[currentTile.innerHTML][0].style.backgroundColor = yellow;
-                    keyboard[currentTile.innerHTML][2] = 2
-                    keyboard[currentTile.innerHTML][1] = true
-                }
-
-            }
-            // If the tile has not been colored yet...
-            else if (greenTracker[i] == false){
-                // Color it grey.
-                currentTile.style.backgroundColor = disableColor;
-                currentTile.style.border = "2px " + disableColor + " solid";
-                tileStates[(rowIndex* 5) + i] = 2
-                    // Color its corresponding button
-                    if (keyboard[currentTile.innerHTML][1] == false){
-                        keyboard[currentTile.innerHTML][0].style.backgroundColor = disableColor;
-                        keyboard[currentTile.innerHTML][2] = 1
-                }
-            }
-            if (lightMode) {
-                keyboard[currentTile.innerHTML][0].style.color = 'white';
-            }
-        });
-    }
-    if (lightMode) {
-        arrayOfTiles.forEach((currentTile) => {
-            currentTile.style.color = "white"
-        })
-    }
-    if (raceMode) {
-        miniPoints[rowIndex].innerHTML = "+" + roundScore
-
-    }
     
-    score += roundScore
-    rowIndex += 1
-
 
 }
 
@@ -403,25 +302,140 @@ function deleteLetter() {
 }
 // Enters a guess for grading
 //________________________________________________________//
-function gradeGuess() {
+
+//compareGuess(curGuess, curTiles)
+// guess - curGuess, arrayOfTiles = curTiles
+
+async function gradeGuess() {
+    // if the guess is a word
+    console.log(curTiles)
     if (words.includes(curGuess.toLowerCase())) {
+        // update clocks
         colIndex = 0
         if (raceMode) {
             miniClock[rowIndex].innerHTML = (((globalTime)/ 1000) - 0.01).toFixed(2) 
             miniClock[rowIndex].style.color = textColor
         }
-        compareGuess(curGuess, curTiles)
+
+        // Initialize variables to deal with duplicate letter edge-cases.
+        prevTime = globalTime - prevTime 
+        roundScore = Math.max(0, (10000 - ((prevTime * 3))/10).toFixed(0))
+        let greenTracker = [false, false, false, false, false];
+        let duplicateDetecter = target;
+        // If the guess is correct end the game
+        if (curGuess.toUpperCase() === target) {
+            curTiles.forEach((element) => {
+                element.style.backgroundColor = green;
+                element.style.border = "2px " + green +  " solid";
+
+            });
+            for (let i = boardIndex - 1; i > boardIndex - 6; i--) {
+                miniBoard[i].style.backgroundColor = green
+            
+            }
+            for(let i = rowIndex * 5; i < (rowIndex * 5) + 5; i++) {
+                tileStates[i] = 4
+            }
+            roundScore += 20000
+            endGame("YOU WON");
+        }   
+        // If the guess is incorrect...
+        else {
+            // Iterate throgh each tile.
+            curTiles.forEach((currentTile, i) => {
+                // If the letter is in the right spot...
+                if (currentTile.innerHTML == target[i]) {
+                    // update the tile color to green.
+                    currentTile.style.backgroundColor = green;
+                    currentTile.style.border = "2px " + green + " solid";
+                    tileStates[(rowIndex * 5) + i] = 4
+                    // Update grade tracking.
+                    const temp = duplicateDetecter.split('');
+                    temp[i] = '0';
+                    duplicateDetecter = temp.join('');
+                    greenTracker[i] = true;
+                    // Color corresponding minitile
+                    miniBoard[5 * rowIndex + i].style.backgroundColor = green
+                
+                    // Color the corresponding button
+                    keyboard[currentTile.innerHTML][0].style.backgroundColor = green;
+                    keyboard[currentTile.innerHTML][2] = 3
+                    keyboard[currentTile.innerHTML][1] = true
+                }
+
+            });
+            // Iterate throgh each tile again.
+            curTiles.forEach((currentTile, i) => {
+                // If the letter is in the target and has not yet been turned green... 
+                if (duplicateDetecter.includes(currentTile.innerHTML) && greenTracker[i] == false) {
+                    // Update the tile color to yellow
+                    currentTile.style.backgroundColor = yellow;
+                    currentTile.style.border = "2px " + yellow +  " solid";
+                    tileStates[(rowIndex* 5) + i] = 3
+                    // Update grade tracking
+                    duplicateDetecter = duplicateDetecter.replace(currentTile.innerHTML, "0", 1);
+                    // Color the corresponding minitile
+                    miniBoard[5 * rowIndex + i].style.backgroundColor = yellow;
+                
+                    // Color the corresponding button
+                    if (keyboard[currentTile.innerHTML][1] == false) {
+                        keyboard[currentTile.innerHTML][0].style.backgroundColor = yellow;
+                        keyboard[currentTile.innerHTML][2] = 2
+                        keyboard[currentTile.innerHTML][1] = true
+                    }
+
+                }
+                // If the tile has not been colored yet...
+                else if (greenTracker[i] == false){
+                    // Color it grey.
+                    currentTile.style.backgroundColor = disableColor;
+                    currentTile.style.border = "2px " + disableColor + " solid";
+                    tileStates[(rowIndex* 5) + i] = 2
+                        // Color its corresponding button
+                        if (keyboard[currentTile.innerHTML][1] == false){
+                            keyboard[currentTile.innerHTML][0].style.backgroundColor = disableColor;
+                            keyboard[currentTile.innerHTML][2] = 1
+                    }
+                }
+                if (lightMode) {
+                   keyboard[currentTile.innerHTML][0].style.color = 'white';
+                }
+            });
+        }
+        if (lightMode) {
+            curTiles.forEach((currentTile) => {
+                currentTile.style.color = "white"
+            })
+        }
+        if (raceMode) {
+            miniPoints[rowIndex].innerHTML = "+" + roundScore
+
+        }
     
+        score += roundScore
+        rowIndex += 1
         curGuess = ""
         curTiles = []
+        
+        
+        // if the guess is wrong and were out of guesses, end the game
         if (boardIndex == tiles.length && !gameOver){
             score = 0
             endGame("YOU LOST")
         }
+
         
     } else {
         // play some shake animation
+        console.log(boardIndex)
+        for (let i = boardIndex - 1; i > boardIndex - 6; i--) {
+            tiles[i].style.transform = 'scale(1.1)'
+            await Delay(50)
+            tiles[i].style.transform = 'scale(1.0)'
+
+        }
     }
+    
 }
 // Activates game over screen and updates leaderboard.
 //_________________________________________________________________________________________________//
@@ -687,7 +701,7 @@ lightmodeButton.addEventListener("click", (event) => {
     }
 
     while (i <= 5) {
-        miniClock[i].style.color = disableColorx
+        miniClock[i].style.color = disableColor
         miniClock[i].style.backgroundColor = baseColor
 
         i += 1
