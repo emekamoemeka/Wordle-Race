@@ -180,7 +180,7 @@ h1 {
 #replay img {
     width: 100%;
     background: none;
-    object-fit:contain;
+    object-fit: contain;
 }
 #slideInMenu ul{
     list-style: none;
@@ -199,6 +199,12 @@ h1 {
     font-family: sans-serif;
     font-weight: bold;
     
+}
+#slideInMenu h5 {
+    margin-left: 30px;
+    font-size: 8pt;
+    font-family: sans-serif;    
+    color: black;
 }
 
 
@@ -222,15 +228,29 @@ hr {
     background-color: #818384;
     transition: 0.2s;
 }
-#slideInMenu div {
+.displaycontent {
     height: 40px;
     display: flex;
     align-items: center;
     width: 100%;
 }
+#historyLog {
+    height: 0px;
+    visibility: hidden;
+    
+}
 #slideInMenu p{
     background:none;
 }
+
+#slideInMenu button {
+    border: none;
+    margin-left: 25px;
+    background: none;
+    width: 100%;
+    text-align: left;
+}
+
 #slideInMenu img {
     margin-left: 30px;
     margin-right: 20px;

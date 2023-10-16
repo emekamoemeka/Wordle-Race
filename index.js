@@ -46,6 +46,8 @@ const leaderboardImage = document.getElementById("leaderboardButton").querySelec
 const settingsImage = document.getElementById("settingsButton").querySelector("img")
 const menuImage = document.getElementById("slideInButton").querySelector("img")
 const backspaceImage = document.getElementById("backspace").querySelector("img")
+const historyButton = document.getElementById("historyButton")
+const historyLog = document.getElementById("historyLog")
 
 let keyboard = {
     // 0 means no color, 1 means grey, 2 means yellow, 3 means green
@@ -97,6 +99,7 @@ gameOverScreen.style.visibility = "hidden"
 slideInMenu.style.visibility = "hidden"
 leaderboard.style.visibility = "hidden"
 settings.style.visibility = "hidden"
+historyLog.style.visibility = "hidden"
 let buffer = false
 
 let menuOpen = false
@@ -129,9 +132,9 @@ let backspaceSwap = "images/wordleBackspaceLight.png"
 
         
 // randomly choose a light theme
-if (Math.random() > 0.5) {
-    changeColor()
-}
+//if (Math.random() > 0.5) {
+//    changeColor()
+//}
 //When a key is pressed...
 //_________________________________________________________________________________________//
 document.addEventListener('keydown', (event)=> {  
@@ -578,6 +581,26 @@ leaderboardButton.addEventListener("click", (event) => {
    
 
 })
+// Opens version history log
+historyButton.addEventListener("click", (event) => {
+    if (historyButton.innerHTML == 'View History') {
+        historyButton.innerHTML = 'Hide History'
+        historyLog.style.visibility = 'visible'
+        historyLog.style.height = 'fit-content'
+        
+
+    }
+    else {
+        historyButton.innerHTML = 'View History'
+        historyLog.style.visibility = 'hidden'
+        historyLog.style.height = '0px'
+
+
+    }
+    
+    
+}
+)
 
 // Enables/disables timer 
 //________________________________________________________________________________________________________//
