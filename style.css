@@ -16,7 +16,7 @@ h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #818384;
+    border-bottom: 1px solid #d4d6da;
 
     
 }
@@ -278,7 +278,7 @@ hr {
     width: 100%;
 }
 #patchNotes {
-    height: 300px;
+    height: 350px;
     overflow:hidden;
 }
 #historyLog {

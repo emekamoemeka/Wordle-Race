@@ -156,32 +156,33 @@ if (Math.random() > 0.5) {
 }
 //When a key is pressed...
 //_________________________________________________________________________________________//
-document.addEventListener('keydown', (event)=> {  
+
+async function keyPress(key) {
     //if the key is valid and the game is going on...
-    if (((/[a-zA-Z]/).test(event.key) || event.key == 'Enter' || event.key == 'Backspace') && gameOver == false) {
+    if (((/[a-zA-Z]/).test(key) || key == 'Enter' || key == 'Backspace') && gameOver == false) {
         // if we are in bounds and the key was a backspace...
         if (boardIndex <= tiles.length) {
-            if (event.key == "Backspace" && boardIndex > 0 && colIndex >= 1 && curTiles.length > 0) {
+            if (key == "Backspace" && boardIndex > 0 && colIndex >= 1 && curTiles.length > 0) {
                 // delete the current letter.       
                 deleteLetter()
             }
             // If the key was a letter...
-            if (event.key.length === 1 && colIndex < 5) {
+            if (key.length === 1 && colIndex < 5) {
                 // type the letter.
 
-                typeLetter(event.key)
+                typeLetter(key)
             
             }
             // If the key was enter...
-            if (event.key == "Enter" && colIndex == 5) {
+            if (key == "Enter" && colIndex == 5) {
                 // submit the guess for grading.
                 gradeGuess()
             }
         }
     }
-    else if (((/[a-zA-Z]/).test(event.key) || event.key == 'Enter' || event.key == 'Backspace') && gameOver == true && nameEntered == false && raceMode == true) {
+    else if (((/[a-zA-Z]/).test(key) || key == 'Enter' || key == 'Backspace') && gameOver == true && nameEntered == false && raceMode == true) {
 
-        if (event.key == "Backspace" && nameIndex > 0) {
+        if (key == "Backspace" && nameIndex > 0) {
             // delete the current letter.       
             nameEntry[nameIndex - 1].innerHTML = ""
             unblink(nameEntry[nameIndex - 1])
@@ -190,22 +191,41 @@ document.addEventListener('keydown', (event)=> {
             
         }
         // If the key was a letter...
-        if (event.key.length === 1 && nameIndex < 5) {
+        if (key.length === 1 && nameIndex < 5) {
             // type the letter.
             
-            nameEntry[nameIndex].innerHTML = event.key.toUpperCase()
-            blink(nameEntry[nameIndex])
+    
+            if (lightMode) {
+                blink(nameEntry[nameIndex], disableColor)
+            }
+            else {
+                blink(nameEntry[nameIndex], buttonColor)
+        
+            }
+            nameEntry[nameIndex].innerHTML = key.toUpperCase()
+            blink(nameEntry[nameIndex], )
             nameIndex += 1
-            enteredName = enteredName + event.key.toUpperCase()
+            enteredName = enteredName + key.toUpperCase()
             
         
         }
         // If the key was enter...
-        if (event.key == "Enter") {
-            for (let i = 0; i < nameIndex; i++){
-                nameEntry[i].style.backgroundColor = buttonColor
-                nameEntry[i].style.border = "2px solid" + buttonColor
-                nameEntry[i].style.color = textColor
+        if (key == "Enter") {
+            for (let i = nameIndex - 1; i >= 0 ; i--){
+                //color tile
+                nameEntry[i].style.backgroundColor = green
+                nameEntry[i].style.border = "2px solid" + green
+                if (lightMode) {
+                    nameEntry[i].style.color = baseColor
+                }
+                else {
+                    nameEntry[i].style.color = textColor
+                }
+                //blink tile and wait
+
+                blink(nameEntry[i], green)
+                await Delay(50)
+                
                 
             }
             nameEntered = true
@@ -270,21 +290,19 @@ document.addEventListener('keydown', (event)=> {
             }
         }
     }
-});
+};
 
-// Function grades the users guessed word.
-//_______________________________________________________________________________________//
-
-function compareGuess(guess, arrayOfTiles) {
-    
-
-}
 
 // Create an eventlistener for each button which applys its corresponding action to the baord.
 //__________________________________________________________________________________//
 keyboardButtons.forEach(button => {
     button.addEventListener('click', buttonClick);
   });
+
+// when a key is pressed
+document.addEventListener('keydown', (event) => {
+    keyPress(event.key)
+});
 
 function buttonClick(event) {
     const clickedButton = event.target
@@ -308,13 +326,20 @@ function buttonClick(event) {
     }
 
 }
-
+    
 
 // Types a letter on the board
 //_____________________________________________________________________//
 
 function typeLetter(letter) {
-    blink(tiles[boardIndex])
+    if (lightMode) {
+        blink(tiles[boardIndex], disableColor)
+    }
+    else {
+        blink(tiles[boardIndex], buttonColor)
+
+    }
+    
     tileStates[boardIndex] = 1
     tiles[boardIndex].innerHTML = letter.toUpperCase()
     curTiles.push(tiles[boardIndex])
@@ -413,6 +438,8 @@ async function gradeGuess() {
                 else if (tileStates[(rowIndex * 5) + i] != 4){
                     // Color it grey.
                     tileStates[(rowIndex* 5) + i] = 2
+                    // Color the corresponding minitile
+                    miniBoard[5 * rowIndex + i].style.backgroundColor = disableColor;
                         
                 }
                 
@@ -432,9 +459,8 @@ async function gradeGuess() {
             if (lightMode) {
                 keyboard[tiles[i].innerHTML][0].style.color = 'white';
             }
-            tiles[i].style.transform = 'scale(1.05)'
             if (tileStates[i] == 2){
-                //color the tile and button grey
+                //color the tile grey
                 tiles[i].style.backgroundColor = disableColor;
                 tiles[i].style.border = "2px " + disableColor + " solid";
                 // Color its corresponding button
@@ -442,6 +468,8 @@ async function gradeGuess() {
                     keyboard[tiles[i].innerHTML][0].style.backgroundColor = disableColor;
                     keyboard[tiles[i].innerHTML][2] = 1
                 }
+                blink(tiles[i], disableColor)
+
 
             }
             else if (tileStates[i] == 3) {
@@ -454,6 +482,7 @@ async function gradeGuess() {
                     keyboard[tiles[i].innerHTML][2] = 2
                     keyboard[tiles[i].innerHTML][1] = true
                 }
+                blink(tiles[i], yellow)
             }
             else if (tileStates[i] == 4) {
                 // color the tile and button green
@@ -461,11 +490,13 @@ async function gradeGuess() {
                 tiles[i].style.border = "2px " + green +  " solid";
                 // Color the corresponding button
                 keyboard[tiles[i].innerHTML][0].style.backgroundColor = green;
+
                 keyboard[tiles[i].innerHTML][2] = 3
                 keyboard[tiles[i].innerHTML][1] = true
+                blink(tiles[i], green)
             }
+            
             await Delay(50)
-            tiles[i].style.transform = 'scale(1.0)'
         }
     
         score += roundScore
@@ -536,14 +567,9 @@ async function endGame(message) {
 }
 // Blinks a tile.
 //_________________________________________________________________________________________________//
-async function blink(currentTile){
-    if (lightMode) {
-        currentTile.style.border = "2px " + disableColor + " solid"
-    }
-    else {
-        currentTile.style.border = "2px " + buttonColor + " solid"
+async function blink(currentTile, color){
 
-    }
+    currentTile.style.border = "2px " + color + " solid"
 
     // blink
     currentTile.style.transform = 'scale(0.95)'
@@ -552,6 +578,8 @@ async function blink(currentTile){
     await Delay(50)
     currentTile.style.transform = "scale(1.0)"
 
+    
+
 
 }
 // Unblinks a tile.
@@ -559,7 +587,7 @@ async function blink(currentTile){
 async function unblink(currentTile) {
     currentTile.style.border = "2px " + borderColor + " solid"
 
-    currentTile.style.transform = 'scale(1..05)'
+    currentTile.style.transform = 'scale(1.05)'
     await Delay(50)
     currentTile.style.transform = "scale(0.95)"
     await Delay(50)
@@ -748,8 +776,6 @@ function changeColor() {
         disableColor = "#414242"
         green = "#588c4c"
         yellow = "#b89c3c"
-        lightmodeEntry.style.color = disableColor
-        lightmodeButton.innerHTML = ""
         settingsSwap = "images/WordleSettings.png"
         leaderboardSwap = "images/WordleLeaderboard.png"
         menuSwap = "images/wordleHamburger.png"
@@ -770,8 +796,6 @@ function changeColor() {
         disableColor = "#818384"
         green = "#6aaa64"
         yellow = "#c9b458"
-        lightmodeEntry.style.color = textColor
-        lightmodeButton.innerHTML = "X"
         settingsSwap = "images/wordleSettingsLight.png"
         leaderboardSwap = "images/wordleLeaderboardLight.png"
         menuSwap = "images/wordleMenuLight.png"
@@ -784,6 +808,9 @@ function changeColor() {
     window.universal.style.color = textColor
     slideInMenu.style.backgroundColor = baseColor
     background.style.backgroundColor = baseColor
+
+    lightmodeEntry.style.color = textColor
+    lightmodeButton.style.color = textColor
 
     
     for (let i = 0; i < historyPoints.length; i++) {
@@ -945,16 +972,16 @@ function changeColor() {
 
     //updates miniboard
     for (let i = 0; i < 30; i++) {
-        miniBoard[i].style.backgroundColor = borderColor;
-        if (tileStates[i] == 0 || tileStates[i] == 1 || tileStates[i] == 2) {
-            miniBoard[i].style.backgroundColor = buttonColor;
+        miniBoard[i].style.backgroundColor = buttonColor;     
+        if (tileStates[i] == 2) {
+            miniBoard[i].style.backgroundColor = disableColor;
         }
 
         else if (tileStates[i] == 3) {
             miniBoard[i].style.backgroundColor = yellow;
 
         }
-        else {
+        else if (tileStates[i] == 4){
             miniBoard[i].style.backgroundColor = green;
 
         }
@@ -1054,7 +1081,8 @@ function initialize() {
 
     nameEntry.forEach((element) => {
         element.style.backgroundColor = baseColor;
-        element.style.border = "2px" + borderColor  + "solid";
+        element.style.border = "2px " + borderColor  + " solid";
+        element.style.color = textColor
         element.innerHTML = ""
 
     })
@@ -1067,7 +1095,7 @@ function initialize() {
 
       });
     miniBoard.forEach((element) => {
-        element.style.backgroundColor = borderColor;
+        element.style.backgroundColor = buttonColor;
         element.innerHTML = ""
 
       });
