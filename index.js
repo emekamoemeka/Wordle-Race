@@ -150,11 +150,10 @@ let leaderboardSwap = "images/wordleLeaderboardLight.png"
 let menuSwap = "images/wordleMenuLight.png"
 let backspaceSwap = "images/wordleBackspaceLight.png"
 
-console.log(target)
 // randomly choose a light theme
-//if (Math.random() > 0.5) {
-//    changeColor()
-//}
+if (Math.random() > 0.5) {
+    changeColor()
+}
 //When a key is pressed...
 //_________________________________________________________________________________________//
 document.addEventListener('keydown', (event)=> {  
@@ -364,17 +363,15 @@ async function gradeGuess() {
         let duplicateDetecter = target;
         // If the guess is correct end the game
         if (curGuess.toUpperCase() === target) {
-            curTiles.forEach((element) => {
-                element.style.backgroundColor = green;
-                element.style.border = "2px " + green +  " solid";
+            curTiles.forEach((currentTile, i) => {
+                // update the tile color to green.  
+                tileStates[(rowIndex * 5) + i] = 4
 
             });
+            // update the minitiles to green
             for (let i = boardIndex - 1; i > boardIndex - 6; i--) {
                 miniBoard[i].style.backgroundColor = green
             
-            }
-            for(let i = rowIndex * 5; i < (rowIndex * 5) + 5; i++) {
-                tileStates[i] = 4
             }
             roundScore += 20000
             endGame("YOU WON");
@@ -1035,7 +1032,6 @@ function initialize() {
     
     tileStates = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     target = words[Math.floor(Math.random() * words.length)].toUpperCase()
-    console.log(target)
     
     boardIndex = 0
     colIndex = 0
