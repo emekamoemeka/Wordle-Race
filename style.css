@@ -58,6 +58,46 @@ h1 {
     margin: 10px;
 }
 
+#rankings {
+    border-top: 2px solid #818384;
+
+}
+
+.entry {
+    z-index: 2;
+    position: relative;
+}
+
+#leaderSwap {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    position: relative;
+    top: 2px;
+    background: none;
+}
+#leaderSwap button {
+    width: 100px;
+    height: 30px;
+    border-top-left-radius: 10%;
+    border-top-right-radius: 10%;
+    border-top: 2px solid #818384;
+    border-left: 2px solid #818384;
+    border-right: 2px solid #818384;
+    font-size: 12pt;
+
+}
+
+#local {
+    border-bottom: 2px solid white;
+    transform: scale(1.1);
+    z-index: 1;
+}
+#global {
+    border-bottom: 2px solid #818384;
+    background-color: #d4d6da;
+}
+
 #board {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -182,6 +222,9 @@ h1 {
     background: none;
     object-fit: contain;
 }
+#slideInMenu {
+    height: 100%;
+}
 #slideInMenu ul{
     list-style: none;
     padding: 0px;
@@ -224,7 +267,7 @@ hr {
     height: 1px;
     background-color:#d4d6da;
 }
-#slideInMenu div:hover {
+.displaycontent:hover {
     background-color: #818384;
     transition: 0.2s;
 }
@@ -233,6 +276,10 @@ hr {
     display: flex;
     align-items: center;
     width: 100%;
+}
+#patchNotes {
+    height: 300px;
+    overflow:hidden;
 }
 #historyLog {
     height: 0px;

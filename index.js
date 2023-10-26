@@ -48,8 +48,27 @@ const menuImage = document.getElementById("slideInButton").querySelector("img")
 const backspaceImage = document.getElementById("backspace").querySelector("img")
 const historyButton = document.getElementById("historyButton")
 const historyLog = document.getElementById("historyLog")
-const historyPoints = Array.from(document.getElementById("slideInMenu").querySelectorAll("h5")) //+ Array.from(historyLog.querySelectorAll("h5"))
+const historyPoints = Array.from(document.getElementById("slideInMenu").querySelectorAll("h5")) 
 
+const rankings = document.getElementById("rankings")
+
+const patchNotes = document.getElementById("patchNotes")
+
+// leaderboard swap buttons
+const localLeaderButton = document.getElementById("local")
+const globalLeaderButton = document.getElementById("global")
+
+//global leaderboard data store
+let gboardScores = ["99999", "00000", "00000", "00000", "00000",]
+let gboardNames = ["Huy", "- - - - -", "- - - - -", "- - - - -", "- - - - -",]
+let gboardTimes = ["5.00", "-:--", "-:--", "-:--", "-:--",]
+
+// local leaderboard data store
+let lboardScores = ["00000", "00000", "00000", "00000", "00000",]
+let lboardNames = ["- - - - -", "- - - - -", "- - - - -", "- - - - -", "- - - - -",]
+let lboardTimes = ["0:00", "-:--", "-:--", "-:--", "-:--",]
+
+// keboard buttons status tracker
 let keyboard = {
     // 0 means no color, 1 means grey, 2 means yellow, 3 means green
     "A": [document.getElementById("A"), false, 0],
@@ -102,7 +121,7 @@ leaderboard.style.visibility = "hidden"
 settings.style.visibility = "hidden"
 historyLog.style.visibility = "hidden"
 let buffer = false
-
+let localBoardMode = true
 let menuOpen = false
 let score = 0
 let roundScore = 0
@@ -131,7 +150,7 @@ let leaderboardSwap = "images/wordleLeaderboardLight.png"
 let menuSwap = "images/wordleMenuLight.png"
 let backspaceSwap = "images/wordleBackspaceLight.png"
 
-        
+console.log(target)
 // randomly choose a light theme
 //if (Math.random() > 0.5) {
 //    changeColor()
@@ -192,24 +211,31 @@ document.addEventListener('keydown', (event)=> {
             }
             nameEntered = true
             for (let i = 0; i < 5; i++) {
-                if (leaderBoardScores[i].innerHTML < score) {
+                if (lboardScores[i] < score) {
                     if (leaderIndex < 5) {
                         leaderIndex += 1
                     }
 
-                    // color all the leaderboard elements at that rank
-                    leaderBoardNames[i].style.color = textColor
-                    leaderBoardScores[i].style.color = textColor
-                    leaderBoardTimes[i].style.color = textColor
-                    leaderBoardRanks[i].style.color = textColor
-                    
-                    // store current indexs score
-                    let LBBacklog = [leaderBoardNames[i].innerHTML, leaderBoardScores[i].innerHTML, leaderBoardTimes[i].innerHTML]
 
-                    // put new score at curent score 
-                    leaderBoardScores[i].innerHTML = score
-                    leaderBoardNames[i].innerHTML = enteredName
-                    leaderBoardTimes[i].innerHTML = (((globalTime)/ 1000) - 0.01).toFixed(2)
+                    // store current indexs score
+                    let LBBacklog = [lboardNames[i], lboardScores[i], lboardTimes[i]]
+
+
+                    if (localBoardMode) {
+                        // put new score at curent score 
+                        leaderBoardScores[i].innerHTML = score
+                        leaderBoardNames[i].innerHTML = enteredName
+                        leaderBoardTimes[i].innerHTML = (((globalTime)/ 1000) - 0.01).toFixed(2)
+                        
+                        // color all the leaderboard elements at that rank
+                        colorOrDisable(true, i)
+                    }
+
+                    // store local board data
+                    lboardScores[i] = score
+                    lboardNames[i] = enteredName
+                    lboardTimes[i] = (((globalTime)/ 1000) - 0.01).toFixed(2)
+                
 
             // Move current scores down one slot
                     // while i < leaderIndex:
@@ -217,21 +243,26 @@ document.addEventListener('keydown', (event)=> {
                         // move index
                         i += 1
                         // store current index
-                        let temp = [leaderBoardNames[i].innerHTML, leaderBoardScores[i].innerHTML, leaderBoardTimes[i].innerHTML]
+                        let temp = [lboardNames[i], lboardScores[i], lboardTimes[i]]
 
                          // put stored score at curent index
-                        leaderBoardNames[i].innerHTML = LBBacklog[0]
-                        leaderBoardScores[i].innerHTML = LBBacklog[1]
-                        leaderBoardTimes[i].innerHTML = LBBacklog[2]
+                         if (localBoardMode) {
+                            leaderBoardNames[i].innerHTML = LBBacklog[0]
+                            leaderBoardScores[i].innerHTML = LBBacklog[1]
+                            leaderBoardTimes[i].innerHTML = LBBacklog[2]
+                            // color all the leaderboard elements at that rank
+                            colorOrDisable(true, i)
+                         }
+                        
+
+                        // store local board data
+                        lboardScores[i] = LBBacklog[1]
+                        lboardNames[i] = LBBacklog[0]
+                        lboardTimes[i] = LBBacklog[2]
 
                         //udate backlog
                         LBBacklog = temp
-
-                        // color all the leaderboard elements at that rank
-                        leaderBoardNames[i].style.color = textColor
-                        leaderBoardScores[i].style.color = textColor
-                        leaderBoardTimes[i].style.color = textColor
-                        leaderBoardRanks[i].style.color = textColor
+                                                
                     }
                    
                     // stop updating leaderboard
@@ -470,7 +501,7 @@ async function gradeGuess() {
             tiles[boardIndex - i].style.transform = 'scale(1.0)'
         }
     }
-    
+
 }
 // Activates game over screen and updates leaderboard.
 //_________________________________________________________________________________________________//
@@ -588,6 +619,9 @@ historyButton.addEventListener("click", (event) => {
         historyButton.innerHTML = 'Hide History'
         historyLog.style.visibility = 'visible'
         historyLog.style.height = 'fit-content'
+        patchNotes.style.height = "400px"
+        patchNotes.style.overflow = "scroll"
+
         
 
     }
@@ -595,6 +629,9 @@ historyButton.addEventListener("click", (event) => {
         historyButton.innerHTML = 'View History'
         historyLog.style.visibility = 'hidden'
         historyLog.style.height = '0px'
+        patchNotes.style.height = "300px"
+        patchNotes.style.overflow = "visible"
+        
 
 
     }
@@ -624,8 +661,83 @@ timerButton.addEventListener("click", (event) => {
 
     }
 })
-// Enables/disables dark mode
 
+//color/disable leaderboard rank
+function colorOrDisable(color, i) {
+    if (color) {
+        leaderBoardNames[i].style.color = textColor
+        leaderBoardScores[i].style.color = textColor
+        leaderBoardTimes[i].style.color = textColor
+        leaderBoardRanks[i].style.color = textColor
+    }
+    else {
+        leaderBoardNames[i].style.color = disableColor
+        leaderBoardScores[i].style.color = disableColor
+        leaderBoardTimes[i].style.color = disableColor
+        leaderBoardRanks[i].style.color = disableColor
+    }
+    
+}
+
+                        
+// Switch between leaderboard modes 
+//___________________________________________________________________________________________________________//
+localLeaderButton.addEventListener("click", function(){
+    switchLeaderboardMode(localLeaderButton, globalLeaderButton, lboardNames, lboardScores, lboardTimes)
+});
+globalLeaderButton.addEventListener("click", function(){
+    switchLeaderboardMode(globalLeaderButton, localLeaderButton, gboardNames, gboardScores, gboardTimes)
+});
+
+function switchLeaderboardMode(onButton, offButton, namesArray, scoresArray, timesArray) {
+    //update local board mode 
+    if (onButton == localLeaderButton) {
+        localBoardMode = true
+    }
+    else {
+        localBoardMode = false
+    }
+    
+    // make active tab bigger
+    onButton.style.transform = "scale(1.1)"
+    onButton.style.zIndex  = "1"
+
+    offButton.style.transform = "scale(1.0)"
+    offButton.style.zIndex  = "0"
+    //swictch active tab
+    onButton.style.borderBottom = "2px solid " + baseColor
+    offButton.style.borderBottom = "2px solid " + disableColor
+    offButton.style.backgroundColor = borderColor
+    onButton.style.backgroundColor = baseColor
+
+    //update tabs data
+    i = 0
+    while (namesArray[i] != "- - - - -") {
+        //enter data
+        leaderBoardNames[i].innerHTML = namesArray[i]
+        leaderBoardScores[i].innerHTML = scoresArray[i]
+        leaderBoardTimes[i].innerHTML = timesArray[i]
+        //color and increment
+        colorOrDisable(true, i)
+        i++
+    }
+    //disable unsused ranks
+    while (i < 5) {
+        //clear data
+        leaderBoardNames[i].innerHTML = "- - - - -"
+        leaderBoardScores[i].innerHTML = "00000"
+        leaderBoardTimes[i].innerHTML = "0:00"
+        // color and increment
+        colorOrDisable(false, i)
+        i++
+    }
+
+
+}
+
+
+// Enables/disables dark mode
+//___________________________________________________________________________________________________________//
 lightmodeButton.addEventListener("click", (changeColor));
 
 function changeColor() {
@@ -744,6 +856,33 @@ function changeColor() {
         
     
     })
+
+    localLeaderButton.style.borderTop = "2px solid " + disableColor;
+    localLeaderButton.style.borderLeft = "2px solid " + disableColor;
+    localLeaderButton.style.borderRight = "2px solid " + disableColor;
+
+
+    globalLeaderButton.style.borderTop = "2px solid " + disableColor;
+    globalLeaderButton.style.borderLeft = "2px solid " + disableColor;
+    globalLeaderButton.style.borderRight = "2px solid " + disableColor;
+
+    rankings.style.borderTop = "2px solid " + disableColor
+
+    if (localBoardMode) {
+        switchLeaderboardMode(localLeaderButton, globalLeaderButton, lboardNames, lboardScores, lboardTimes)
+    }
+    else {
+        switchLeaderboardMode(globalLeaderButton, localLeaderButton, gboardNames, gboardScores, gboardTimes)
+    }
+   
+    localLeaderButton.style.color = textColor;
+    globalLeaderButton.style.color = textColor;
+
+    if (localBoardMode) {
+
+    }
+
+
     replayButton.style.backgroundColor = buttonColor;
     leaderboard.style.backgroundColor = baseColor;
     settings.style.backgroundColor = baseColor;
@@ -860,6 +999,7 @@ function updateLeaderboardElements(elements) {
 // Resets game.
 //_________________________________________________________________________________________________//
 function initialize() {
+
     clearInterval(globalClock)
     if (raceMode) {
         globalClock = setInterval(incrementTimer, 10)
@@ -895,6 +1035,7 @@ function initialize() {
     
     tileStates = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     target = words[Math.floor(Math.random() * words.length)].toUpperCase()
+    console.log(target)
     
     boardIndex = 0
     colIndex = 0

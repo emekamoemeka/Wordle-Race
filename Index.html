@@ -50,60 +50,9 @@
         </li>
 
         <li class="comingSoon"><p>more coming soon!</p></li>
-        <hr />
-        <a
-          href="https://github.com/emekamoemeka/Wordle-Race.git"
-          target="_blank"
-        >
-          <div class="displaycontent">
-            <p class="comingSoon">This Repository</p>
-          </div>
-        </a>
+
         <hr />
       </ul>
-      <h3>Patch Notes</h3>
-      <ul>
-        <li>
-          <h4>Version 1.1 Patch Notes:</h4>
-        </li>
-
-        <li>
-          <h5>
-            - Added tile animations for when letters are <br />
-            typed, deleted, and guessed.
-          </h5>
-        </li>
-
-        <li>
-          <h5>
-            - Light and dark mode are now randomly <br />
-            assigned at the start of each session.
-          </h5>
-        </li>
-
-        <li>
-          <h5>
-            - Buttons now update color at the same time <br />
-            as their tiles.
-          </h5>
-        </li>
-
-        <li><h5>- Links now open in a seperate window.</h5></li>
-        <li><h5>- Began a version history log.</h5></li>
-        <div class="displaycontent">
-          <button id="historyButton">View History</button>
-        </div>
-      </ul>
-      <div id="historyLog">
-        <ul>
-          <li>
-            <h4>Version 1.0 Patch Notes:</h4>
-          </li>
-          <li><h5>- Initial release of Wordle Race</h5></li>
-          <li><h4>-- No older versions --</h4></li>
-        </ul>
-      </div>
-      <hr />
       <h3>Contact Me</h3>
       <ul>
         <li>
@@ -135,6 +84,68 @@
         </li>
         <hr />
       </ul>
+      <div id="patchNotes">
+        <h3>Patch Notes</h3>
+        <ul>
+          <li><h4>Version 1.11 Patch Notes:</h4></li>
+          <li>
+            <h5>- Added Prototype global leaderboard to <br />be fixed.</h5>
+          </li>
+          <li>
+            <h5>
+              - Fixed tile coloring animation bug when <br />guess is correct.
+            </h5>
+          </li>
+          <li>
+            <h5>- Made patch notes history scrollable.</h5>
+          </li>
+          <div class="displaycontent">
+            <button id="historyButton">View History</button>
+          </div>
+        </ul>
+        <div id="historyLog">
+          <ul>
+            <li>
+              <h4>Version 1.1 Patch Notes:</h4>
+            </li>
+            <li>
+              <h5>
+                - Added tile animations for when letters are <br />
+                typed, deleted, and guessed.
+              </h5>
+            </li>
+            <li>
+              <h5>
+                - Light and dark mode are now randomly <br />
+                assigned at the start of each session.
+              </h5>
+            </li>
+            <li>
+              <h5>
+                - Buttons now update color at the same time <br />
+                as their tiles.
+              </h5>
+            </li>
+            <li><h5>- Links now open in a seperate window.</h5></li>
+            <li><h5>- Began a version history log.</h5></li>
+          </ul>
+          <ul>
+            <li>
+              <h4>Version 1.0 Patch Notes:</h4>
+            </li>
+            <li><h5>- Initial release of Wordle Race</h5></li>
+            <li><h4>-- No older versions --</h4></li>
+          </ul>
+        </div>
+      </div>
+      <hr />
+
+      <a href="https://github.com/emekamoemeka/Wordle-Race.git" target="_blank">
+        <div class="displaycontent">
+          <p class="comingSoon">This Repository</p>
+        </div>
+      </a>
+      <hr />
     </div>
     <div id="settings" class="menu">
       <h4>Settings</h4>
@@ -149,6 +160,10 @@
     </div>
     <div id="leaderboard" class="menu">
       <h4>Leaderboard</h4>
+      <div id="leaderSwap">
+        <button id="local">local</button>
+        <button id="global">global</button>
+      </div>
       <div id="rankings">
         <div class="entry">
           <p class="rank">1</p>
